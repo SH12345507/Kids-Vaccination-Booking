@@ -1,0 +1,90 @@
+/* ===========================
+   ABOUT PAGE - PAGE-SPECIFIC STYLES
+   =========================== */
+
+.about-intro,
+.about-mission {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px 24px 0;
+  text-align: center;
+}
+
+.about-intro h2,
+.about-mission h2,
+.about-features h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 14px;
+}
+
+.about-intro p,
+.about-mission p {
+  font-size: 15px;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+.about-features {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 50px 24px 70px;
+  text-align: center;
+}
+
+.about-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.about-feature-card {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  padding: 32px 22px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.about-feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.about-feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.about-feature-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 8px;
+}
+
+.about-feature-card p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .about-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .about-features-grid {
+    grid-template-columns: 1fr;
+  }
+}

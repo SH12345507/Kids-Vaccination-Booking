@@ -1,0 +1,44 @@
+/* ===========================
+   PARENT SIGNUP PAGE - PAGE-SPECIFIC STYLES
+   (Hero banner, navbar, form-card, input-group,
+   btn-primary, footer come from common.css)
+   =========================== */
+
+.signup-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+}
+
+.signup-card {
+  max-width: 650px;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-card {
+    padding: 24px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

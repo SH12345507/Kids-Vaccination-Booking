@@ -1,0 +1,64 @@
+/* ===========================
+   GUIDANCE PAGE - PAGE-SPECIFIC STYLES
+   (Hero banner, navbar, footer come from common.css)
+   =========================== */
+
+.guidance-content {
+  max-width: 800px;
+  width: 90%;
+  margin: 50px auto;
+}
+
+.guidance-card {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-sm);
+}
+
+.guidance-icon {
+  width: 56px;
+  height: 56px;
+  background-color: #eaf2fb;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.guidance-card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 20px;
+}
+
+.guidance-card p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.guidance-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 280px;
+  }
+
+  .guidance-card {
+    padding: 24px;
+  }
+}
+.urdu-paragraph {
+  direction: rtl;
+  text-align: right;
+  font-size: 15px;
+  line-height: 2;
+  color: var(--color-text-muted);
+}
