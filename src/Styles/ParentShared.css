@@ -1,0 +1,83 @@
+/* ===========================
+   PARENT SHARED STYLES
+   Common rules used across ParentDashboard and all
+   Settings sub-pages (Profile, ChangePassword,
+   ManageChildren, Notifications, etc.)
+   Import this file in every page that uses these classes.
+   =========================== */
+ 
+/* ===== Sub-page wrapper (used by Settings sub-screens) ===== */
+.settings-subpage-wrapper {
+  padding: 32px;
+  flex: 1;
+  max-width: 650px;
+}
+ 
+/* ===== Back button (top bar) ===== */
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-right: 14px;
+  transition: var(--transition-fast);
+}
+ 
+.back-btn:hover {
+  color: var(--color-primary);
+}
+ 
+/* ===== Topbar title takes remaining space when back-btn is present ===== */
+.dashboard-topbar h2 {
+  flex: 1;
+}
+ 
+/* ===== Save row (used at the bottom of forms) ===== */
+.settings-save-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+ 
+.settings-save-row .btn-primary {
+  width: auto;
+  padding: 12px 28px;
+}
+ 
+/* ===== Save success message ===== */
+.save-success {
+  font-size: 13px;
+  color: var(--color-success);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+ 
+/* ===== Secondary button (Cancel, Add Another, etc.) ===== */
+.btn-secondary {
+  width: auto;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-medium);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+ 
+.btn-secondary:hover {
+  background-color: #f1f5f9;
+}
+ 
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .settings-subpage-wrapper {
+    padding: 20px;
+  }
+}

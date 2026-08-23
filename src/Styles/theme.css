@@ -1,0 +1,48 @@
+:root {
+  /* ===== Primary Colors ===== */
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-light: #60a5fa;
+
+  /* ===== Secondary / Accent ===== */
+  --color-secondary: #0ea5e9;
+  --color-accent: #14b8a6;
+  --color-accent-warm: #f59e0b;
+
+  /* ===== Backgrounds ===== */
+  --color-bg-gradient-start: #eff6ff;
+  --color-bg-gradient-mid: #f0fdfa;
+  --color-bg-gradient-end: #ffffff;
+  --color-card-bg: #ffffff;
+
+  /* ===== Text ===== */
+  --color-text-dark: #0f172a;
+  --color-text-medium: #334155;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
+
+  /* ===== Borders & Status ===== */
+  --color-border: #e2e8f0;
+  --color-border-focus: #2563eb;
+  --color-error: #ef4444;
+  --color-success: #10b981;
+
+  /* ===== Typography ===== */
+  --font-main: "Poppins", "Segoe UI", sans-serif;
+
+  /* ===== Radius ===== */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 50px;
+
+  /* ===== Shadows ===== */
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 20px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 10px 30px rgba(37, 99, 235, 0.12);
+  --shadow-glow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+
+  /* ===== Transitions ===== */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.35s ease;
+}

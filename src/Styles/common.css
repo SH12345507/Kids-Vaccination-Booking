@@ -1,0 +1,339 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
+}
+
+html, body {
+  scroll-behavior: smooth;
+}
+
+/* ===== Page Background Wrapper ===== */
+.page-bg {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-gradient-start) 0%,
+    var(--color-bg-gradient-mid) 50%,
+    var(--color-bg-gradient-end) 100%
+  );
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Navbar (shared across all screens) ===== */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e5f8e;
+}
+
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.icon-btn {
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.icon-btn:hover {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+/* ===== Form Card (Login, Signup, etc.) ===== */
+.form-card {
+  background-color: var(--color-card-bg);
+  width: 100%;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition-medium);
+}
+
+.form-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.form-card h1 {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* ===== Input Fields (shared) ===== */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label,
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-medium);
+  margin-bottom: 8px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #f8fafc;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  position: relative;
+  transition: var(--transition-fast);
+}
+
+.input-group:focus-within {
+  border-color: var(--color-border-focus);
+  background-color: #ffffff;
+  box-shadow: var(--shadow-glow);
+}
+
+.input-icon {
+  color: var(--color-text-light);
+  margin-right: 10px;
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+
+.input-group:focus-within .input-icon {
+  color: var(--color-primary);
+}
+
+.input-group input,
+.input-group textarea {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 14px;
+  color: var(--color-text-dark);
+  font-family: inherit;
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: #b0b8c4;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 16px;
+  cursor: pointer;
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  transition: var(--transition-fast);
+}
+
+.toggle-password:hover {
+  color: var(--color-primary);
+}
+
+.hint-text {
+  font-size: 12px;
+  color: var(--color-text-light);
+  margin-top: 6px;
+}
+
+.error-text {
+  font-size: 12px;
+  color: var(--color-error);
+  margin-top: 6px;
+}
+
+.input-error {
+  border-color: var(--color-error) !important;
+}
+
+/* ===== Buttons (shared) ===== */
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background-color: #1e5f8e;
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ===== Links ===== */
+.login-text,
+.signup-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--color-text-medium);
+}
+
+.login-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.login-link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* ===== Footer (shared) ===== */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  border-top: 1px solid var(--color-border);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-left h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 4px;
+}
+
+.footer-left p {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+.footer-right {
+  display: flex;
+  gap: 24px;
+  font-size: 13px;
+  color: var(--color-text-light);
+  cursor: pointer;
+}
+
+.footer-right span:hover {
+  color: var(--color-primary);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+/* ===== Hero Static (no slider, single image) ===== */
+@keyframes flyInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flyInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-static {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 700px;
+  text-align: center;
+  z-index: 2;
+}
+
+.hero-static h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: flyInTop 0.7s ease forwards;
+}
+
+.hero-static p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+  opacity: 0;
+  animation: flyInBottom 0.7s ease forwards;
+  animation-delay: 0.2s;
+}
