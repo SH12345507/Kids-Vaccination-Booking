@@ -1,0 +1,132 @@
+/* ===========================
+   ADMIN LAYOUT - SHARED STYLES
+   Uses theme.css variables
+   =========================== */
+
+/* ===== Sidebar ===== */
+.admin-sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #0f2a43 0%, #1e5f8e 100%);
+  display: flex; flex-direction: column;
+  padding: 24px 16px;
+  position: sticky; top: 0;
+  height: 100vh; flex-shrink: 0;
+}
+
+.admin-sidebar-logo {
+  display: flex; align-items: center; gap: 10px;
+  color: #ffffff; font-size: 18px; font-weight: 700;
+  padding: 0 8px; margin-bottom: 40px;
+}
+
+/* sidebar-nav, sidebar-link, sidebar-logout
+   same classes as HospitalLayout — from theme/common */
+.sidebar-nav {
+  display: flex; flex-direction: column; gap: 6px; flex: 1;
+}
+
+.sidebar-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: none; border: none;
+  border-radius: var(--radius-md);
+  color: rgba(255,255,255,0.75);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; text-align: left;
+  transition: var(--transition-fast);
+}
+.sidebar-link:hover  { background-color: rgba(255,255,255,0.1); color: #fff; }
+.sidebar-link.active { background-color: rgba(255,255,255,0.18); color: #fff; }
+
+.sidebar-logout {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: none; border: none;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.75);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; margin-top: 12px; padding-top: 20px;
+  transition: var(--transition-fast);
+}
+.sidebar-logout:hover { color: #fff; }
+
+/* ===== Topbar ===== */
+.dashboard-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 32px;
+  background-color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+.dashboard-topbar h2 { font-size: 20px; font-weight: 700; color: var(--color-text-dark); }
+
+.admin-avatar {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #0f2a43, #1e5f8e);
+  color: #ffffff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+  transition: var(--transition-fast);
+}
+.admin-avatar:hover { transform: scale(1.08); }
+
+/* ===== Modal (shared) ===== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,23,42,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+.modal-card {
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 32px; width: 90%; max-width: 360px;
+  text-align: center; box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  background: none; border: none;
+  color: var(--color-text-light); cursor: pointer;
+  display: flex; transition: var(--transition-fast);
+}
+.modal-close:hover { color: var(--color-text-dark); }
+.modal-icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #fee2e2;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+.modal-card h3 { font-size: 19px; font-weight: 700; color: var(--color-text-dark); margin-bottom: 8px; }
+.modal-card p  { font-size: 14px; color: var(--color-text-muted); margin-bottom: 24px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 12px; }
+.modal-actions .btn-secondary,
+.modal-actions .btn-danger-solid { flex: 1; padding: 12px; }
+.btn-secondary {
+  background: #f1f5f9; color: var(--color-text-medium);
+  border: none; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-danger-solid {
+  background: var(--color-error); color: #fff;
+  border: none; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-danger-solid:hover { background: #dc2626; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .admin-sidebar { width: 200px; }
+}
+@media (max-width: 640px) {
+  .dashboard-layout { flex-direction: column; }
+  .admin-sidebar {
+    width: 100%; height: auto;
+    flex-direction: row; align-items: center;
+    padding: 12px 16px; overflow-x: auto;
+  }
+  .admin-sidebar-logo { margin-bottom: 0; margin-right: 16px; }
+  .sidebar-nav { flex-direction: row; flex: none; }
+  .sidebar-logout { display: none; }
+}

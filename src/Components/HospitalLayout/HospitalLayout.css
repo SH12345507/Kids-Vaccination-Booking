@@ -1,0 +1,188 @@
+/* ===========================
+   HOSPITAL LAYOUT - SHARED STYLES
+   Sidebar, Topbar, Hero — sab pages ke liye
+   =========================== */
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 240px;
+  background-color: #1e5f8e;
+  display: flex; flex-direction: column;
+  padding: 24px 16px;
+  position: sticky; top: 0;
+  height: 100vh; flex-shrink: 0;
+}
+.sidebar-logo {
+  display: flex; align-items: center; gap: 10px;
+  color: #ffffff; font-size: 20px; font-weight: 700;
+  padding: 0 8px; margin-bottom: 40px;
+}
+.sidebar-nav {
+  display: flex; flex-direction: column; gap: 6px; flex: 1;
+}
+.sidebar-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: none; border: none;
+  border-radius: var(--radius-md);
+  color: rgba(255,255,255,0.75);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; text-align: left;
+  transition: var(--transition-fast);
+}
+.sidebar-link:hover { background-color: rgba(255,255,255,0.1); color: #fff; }
+.sidebar-link.active { background-color: rgba(255,255,255,0.18); color: #fff; }
+.sidebar-logout {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: none; border: none;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.75);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; margin-top: 12px; padding-top: 20px;
+  transition: var(--transition-fast);
+}
+.sidebar-logout:hover { color: #fff; }
+
+/* ===== Main Content ===== */
+.dashboard-main {
+  flex: 1; display: flex; flex-direction: column; min-width: 0;
+}
+
+/* ===== Topbar ===== */
+.dashboard-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 32px;
+  background-color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+.dashboard-topbar h2 { font-size: 20px; font-weight: 700; color: var(--color-text-dark); }
+.user-avatar {
+  width: 36px; height: 36px;
+  background-color: #1e5f8e; color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+}
+
+/* ===== Shared Hero ===== */
+.dash-hero {
+  position: relative; width: 100%; height: 180px;
+  overflow: hidden; display: flex; align-items: center;
+}
+.dash-hero-img {
+  position: absolute; top: -10px; left: -10px;
+  width: calc(100% + 20px); height: calc(100% + 20px);
+  object-fit: cover; filter: blur(2px);
+}
+.dash-hero-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(15,42,67,0.75), rgba(14,116,144,0.6));
+}
+.dash-hero-content {
+  position: relative; z-index: 2; padding: 24px 32px;
+}
+.dash-hero-content h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.dash-hero-content p  { font-size: 13px; color: rgba(255,255,255,0.9); }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .sidebar { width: 200px; }
+  .dash-hero { height: 140px; }
+}
+@media (max-width: 640px) {
+  .dashboard-layout { flex-direction: column; }
+  .sidebar {
+    width: 100%; height: auto;
+    flex-direction: row; align-items: center;
+    padding: 12px 16px; overflow-x: auto;
+  }
+  .sidebar-logo { margin-bottom: 0; margin-right: 16px; }
+  .sidebar-nav  { flex-direction: row; flex: none; }
+  .sidebar-logout { display: none; }
+}
+/* ===== Logo ===== */
+.sidebar-logo-img {
+  width: 48px; height: 48px;
+  object-fit: contain;
+}
+.sidebar-logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* ===== Topbar Right ===== */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* ===== Bell ===== */
+.bell-wrap {
+  position: relative;
+  cursor: pointer;
+}
+.bell-icon {
+  color: #64748b;
+  transition: var(--transition-fast);
+}
+.bell-icon:hover { color: #1e5f8e; }
+.bell-badge {
+  position: absolute;
+  top: -6px; right: -6px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,23,42,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+.modal-card {
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 32px; width: 90%; max-width: 360px;
+  text-align: center; box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  background: none; border: none;
+  color: var(--color-text-light); cursor: pointer;
+  display: flex; transition: var(--transition-fast);
+}
+.modal-close:hover { color: var(--color-text-dark); }
+.modal-icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #fee2e2;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+.modal-card h3 { font-size: 19px; font-weight: 700; color: var(--color-text-dark); margin-bottom: 8px; }
+.modal-card p  { font-size: 14px; color: var(--color-text-muted); margin-bottom: 24px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 12px; }
+.modal-actions .btn-secondary,
+.modal-actions .btn-danger-solid { flex: 1; padding: 12px; }
+.btn-secondary {
+  background: #f1f5f9; color: var(--color-text-medium);
+  border: none; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-danger-solid {
+  background: var(--color-error); color: #fff;
+  border: none; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-danger-solid:hover { background: #dc2626; }
