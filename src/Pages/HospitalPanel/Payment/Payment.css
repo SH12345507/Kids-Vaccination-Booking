@@ -1,0 +1,43 @@
+/* ===========================
+   PAYMENT - PAGE SPECIFIC
+   Layout  => HospitalLayout.css
+   Shared  => HospitalShared.css
+   sf-*    => HProfile.css
+   .settings-wrapper, cp-actions, btn-save-sm,
+   settings-toast => HSettings/HProfile.css
+   =========================== */
+
+.payment-gov-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 32px;
+  gap: 12px;
+}
+
+.payment-gov-icon {
+  width: 72px; height: 72px;
+  background-color: #e0f5f3;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 8px;
+}
+
+.payment-gov-box h3 {
+  font-size: 20px; font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.payment-gov-box p {
+  font-size: 14px; color: var(--color-text-muted);
+  line-height: 1.7; max-width: 360px;
+}
+
+.payment-gov-box strong { color: #0f6e56; }
+
+.payment-hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}

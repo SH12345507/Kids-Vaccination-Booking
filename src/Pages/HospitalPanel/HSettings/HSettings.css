@@ -1,0 +1,69 @@
+/* ===========================
+   HSETTING - PAGE SPECIFIC STYLES
+   Modal styles => HospitalShared.css
+   Layout => HospitalLayout.css
+   =========================== */
+
+.settings-wrapper {
+  padding: 32px;
+  flex: 1;
+  max-width: 700px;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+}
+
+.settings-list-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  padding: 18px 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition-fast);
+}
+.settings-list-item:last-child { border-bottom: none; }
+.settings-list-item:hover { background-color: #f8fafc; border-radius: var(--radius-md); }
+
+.settings-list-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.settings-logout-icon { background-color: #fee2e2; }
+.settings-delete-icon { background-color: #fee2e2; }
+
+.settings-list-text { flex: 1; }
+.settings-list-text h4 { font-size: 15px; font-weight: 600; color: var(--color-text-dark); margin-bottom: 3px; }
+.settings-list-text p  { font-size: 13px; color: var(--color-text-muted); }
+
+.settings-list-arrow { color: var(--color-text-light); flex-shrink: 0; transition: var(--transition-fast); }
+.settings-list-item:hover .settings-list-arrow { color: var(--color-primary); transform: translateX(3px); }
+.settings-list-logout:hover .settings-list-arrow,
+.settings-list-delete:hover .settings-list-arrow { color: var(--color-error); }
+
+.delete-confirm-input { text-align: left; margin-bottom: 22px; }
+.delete-confirm-input .field-label { font-size: 13px; margin-bottom: 8px; }
+.delete-confirm-field {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 14px; outline: none;
+  transition: var(--transition-fast);
+}
+.delete-confirm-field:focus { border-color: var(--color-error); box-shadow: 0 0 0 4px rgba(239,68,68,0.1); }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) { .settings-wrapper { padding: 20px; } }
+@media (max-width: 480px) {
+  .settings-list-item { gap: 12px; padding: 16px 8px; }
+  .settings-list-icon { width: 38px; height: 38px; }
+}
