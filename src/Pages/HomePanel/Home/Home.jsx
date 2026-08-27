@@ -48,8 +48,8 @@ const Home = () => {
         {/* Navbar */}
         <header className="navbar navbar-transparent">
           <div className="navbar-left">
-            <img src={logo} alt="KVB" style={{ width: 100, height: 100, objectFit: "contain" }} />
-            <span className="brand-name brand-name-light" style={{ fontSize: 22 }}>KVB</span>
+            <img src={logo} alt="KVB" className="navbar-logo-img" />
+            <span className="brand-name brand-name-light navbar-brand-text">KVB</span>
           </div>
           <div className="navbar-right">
             <UserCircle size={22} className="icon-btn icon-btn-light"

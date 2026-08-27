@@ -48,6 +48,36 @@ html, body {
   color: #1e5f8e;
 }
 
+/* ===== Navbar logo (used by PageHero and other headers) ===== */
+.navbar-logo-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.navbar-brand-text {
+  font-size: 22px;
+}
+
+/* ===== Responsive — shrink navbar contents on small screens so the
+   logo, brand name, and account icon don't crowd together ===== */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  .navbar-logo-img {
+    width: 40px;
+    height: 40px;
+  }
+  .navbar-brand-text {
+    font-size: 16px;
+  }
+  .navbar-right {
+    gap: 12px;
+  }
+}
+
 
 .navbar-right {
   display: flex;

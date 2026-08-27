@@ -5,7 +5,7 @@ import PageHero from "../../../components/PageHero/PageHero";
 import Footer from "../../../components/Footer/Footer";
 import { Syringe } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
 
 const VaccineInfo = () => {
   const token = localStorage.getItem("token");
