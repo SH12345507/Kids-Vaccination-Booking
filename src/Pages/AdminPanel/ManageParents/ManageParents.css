@@ -1,0 +1,75 @@
+/* ===========================
+   MANAGE PARENTS - PAGE SPECIFIC
+   Layout  => AdminLayout.css
+   Shared  => AdminShared.css
+   =========================== */
+
+/* ===== Stats ===== */
+.parent-stats {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; max-width: 500px;
+}
+.p-stat-card {
+  border-radius: var(--radius-md); padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.p-stat-card h3 { font-size: 24px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+.p-stat-card p  { font-size: 12px; color: var(--color-text-muted); }
+
+/* ===== Table ===== */
+.p-name { font-weight: 600; font-size: 14px; }
+.children-count {
+  background: #e8f1fc; color: #1e5f8e;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: var(--radius-pill);
+}
+
+/* ===== Detail Modal ===== */
+.detail-modal { max-width: 440px; text-align: left; }
+.detail-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.detail-avatar {
+  width: 52px; height: 52px; background: #e8f1fc;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.detail-header h3 { font-size: 17px; font-weight: 700; color: var(--color-text-dark); margin-bottom: 4px; }
+.username-tag { font-size: 13px; color: var(--color-text-muted); }
+.detail-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.detail-actions {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding-top: 16px; border-top: 1px solid var(--color-border);
+}
+
+/* ===== Children List ===== */
+.children-list {
+  background: #f8fafc; border-radius: var(--radius-md);
+  padding: 14px 16px; margin-bottom: 20px;
+}
+.children-list h4 {
+  font-size: 13px; font-weight: 700; color: var(--color-text-dark);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.child-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 0; border-bottom: 1px solid var(--color-border);
+  font-size: 13px; color: var(--color-text-dark);
+}
+.child-row:last-child { border-bottom: none; }
+.child-row.clickable { cursor: pointer; border-radius: var(--radius-sm); padding: 8px 6px; transition: var(--transition-fast); }
+.child-row.clickable:hover { background: #e8f1fc; }
+.child-name { font-weight: 600; flex: 1; }
+.child-age  { font-size: 12px; color: var(--color-text-muted); }
+
+/* ===== Vaccine Row ===== */
+.vaccine-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 0; border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+}
+.vaccine-row:last-child { border-bottom: none; }
+.no-vaccines { font-size: 13px; color: var(--color-text-muted); text-align: center; padding: 10px 0; }
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .parent-stats { grid-template-columns: 1fr 1fr; }
+}

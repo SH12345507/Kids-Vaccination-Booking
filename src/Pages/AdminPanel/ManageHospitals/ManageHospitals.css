@@ -1,0 +1,77 @@
+/* ===========================
+   MANAGE HOSPITALS - PAGE SPECIFIC
+   Layout  => AdminLayout.css
+   Shared  => AdminShared.css
+   =========================== */
+
+/* ===== Stats ===== */
+.hospital-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.h-stat-card {
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.h-stat-card h3 { font-size: 24px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+.h-stat-card p  { font-size: 12px; color: var(--color-text-muted); }
+
+/* ===== Hospital name cell ===== */
+.h-name-cell { display: flex; flex-direction: column; gap: 2px; }
+.h-name  { font-weight: 600; font-size: 14px; }
+.h-email { font-size: 11px; color: var(--color-text-muted); }
+
+/* ===== Fee cell ===== */
+.free-tag {
+  background: #e0f5f3; color: #0f6e56;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: var(--radius-pill);
+}
+.fee-cell { display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+
+/* ===== Certificate button ===== */
+.btn-cert {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 10px;
+  background: #e8f1fc; color: #1e5f8e;
+  border: none; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-cert:hover { background: #1e5f8e; color: #fff; }
+
+/* ===== Detail Modal ===== */
+.detail-modal { max-width: 480px; text-align: left; }
+.detail-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.detail-avatar {
+  width: 52px; height: 52px; background: #e8f1fc;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.detail-header h3 { font-size: 17px; font-weight: 700; color: var(--color-text-dark); margin-bottom: 6px; }
+.detail-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.detail-actions {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding-top: 16px; border-top: 1px solid var(--color-border);
+}
+
+/* ===== Certificate Modal ===== */
+.cert-modal { max-width: 400px; }
+.cert-preview {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: #f8fafc; border-radius: var(--radius-md);
+  padding: 24px; margin: 16px 0;
+  border: 1.5px dashed var(--color-border);
+}
+.cert-preview p    { font-size: 14px; font-weight: 600; color: var(--color-text-dark); }
+.cert-preview span { font-size: 12px; color: var(--color-text-muted); }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .hospital-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .hospital-stats { grid-template-columns: 1fr 1fr; }
+}
