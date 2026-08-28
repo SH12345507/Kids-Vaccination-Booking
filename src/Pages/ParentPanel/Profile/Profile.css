@@ -1,0 +1,37 @@
+/* ===========================
+   PROFILE PAGE - PAGE-SPECIFIC STYLES
+   (Shared styles like .settings-subpage-wrapper, .back-btn,
+   .settings-save-row, .save-success come from ParentShared.css)
+   =========================== */
+
+.profile-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.profile-avatar-lg {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #1e5f8e;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.profile-avatar-row h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.profile-avatar-row p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}

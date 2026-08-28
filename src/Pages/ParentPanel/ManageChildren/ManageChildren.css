@@ -1,0 +1,252 @@
+/* ===========================
+   MANAGE CHILDREN PAGE - PAGE-SPECIFIC STYLES
+   (Shared styles like .settings-subpage-wrapper, .back-btn,
+   .btn-secondary come from ParentShared.css)
+   =========================== */
+
+.children-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.child-item {
+  background-color: #f8fafc;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.child-item-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #e0f5f3;
+  color: #0d9488;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.child-item-info {
+  flex: 1;
+}
+
+.child-item-info h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 2px;
+}
+
+.child-item-info p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.child-item-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.child-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  border: none;
+  background-color: #ffffff;
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.child-action-btn:hover {
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.child-action-btn.danger:hover {
+  color: var(--color-error);
+}
+
+.add-child-btn {
+  width: auto;
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ===== Inline Edit Form ===== */
+.child-edit-card {
+  background-color: #f8fafc;
+  border: 1.5px solid var(--color-border-focus);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.child-edit-card .textarea-group {
+  align-items: flex-start;
+}
+
+.child-edit-card .textarea-icon {
+  margin-top: 4px;
+}
+
+.child-edit-card textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.child-edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.child-edit-actions .btn-primary {
+  width: auto;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+/* ===== Birth Certificate (edit card) ===== */
+.cert-current-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.cert-current-link:hover {
+  text-decoration: underline;
+}
+
+.cert-upload-box {
+  padding: 14px;
+}
+
+.cert-upload-box .upload-icon {
+  margin-bottom: 4px;
+}
+
+.cert-upload-box .file-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+/* ===== Remove Confirmation Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeInUp 0.2s ease;
+}
+
+.modal-card {
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  width: 90%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+  display: flex;
+  transition: var(--transition-fast);
+}
+
+.modal-close:hover {
+  color: var(--color-text-dark);
+}
+
+.modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #fee2e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.modal-card h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 8px;
+}
+
+.modal-card p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.modal-actions .btn-secondary,
+.modal-actions .btn-danger-solid {
+  flex: 1;
+  padding: 12px;
+}
+
+.btn-danger-solid {
+  background-color: var(--color-error);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-danger-solid:hover {
+  background-color: #dc2626;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .child-item {
+    flex-wrap: wrap;
+  }
+}

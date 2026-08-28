@@ -1,0 +1,75 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+}
+
+.hospital-type-badge {
+  display: inline-block;
+  background: #e0f5f3;
+  color: #0f6e56;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: capitalize;
+  margin-bottom: 14px;
+}
+
+.modal-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 14px;
+}
+
+.modal-rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 16px 0;
+  font-weight: 600;
+}
+
+.rating-count {
+  color: #777;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.modal-rate-section {
+  border-top: 1px solid #eee;
+  padding-top: 16px;
+}
+
+.stars-input {
+  display: flex;
+  gap: 4px;
+  margin: 8px 0 12px;
+}
