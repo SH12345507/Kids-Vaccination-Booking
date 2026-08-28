@@ -1,0 +1,149 @@
+/* ===========================
+   ADMIN SHARED - COMMON STYLES
+   Import in every admin page
+   =========================== */
+
+/* ===== Page Hero ===== */
+.admin-page-hero {
+  position: relative;
+  margin: 20px 24px 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 160px;
+  display: flex; align-items: center;
+  background: linear-gradient(135deg, #0f2a43, #1e5f8e);
+}
+.admin-page-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(15,42,67,0.6), rgba(14,116,144,0.4));
+}
+.admin-page-hero-content {
+  position: relative; z-index: 2; padding: 24px 32px;
+}
+.admin-page-hero-content h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.admin-page-hero-content p  { font-size: 13px; color: rgba(255,255,255,0.9); }
+
+/* ===== Search Bar ===== */
+.search-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  box-shadow: var(--shadow-sm);
+  flex: 1; min-width: 220px;
+}
+.search-icon { color: var(--color-text-light); flex-shrink: 0; }
+.search-input {
+  border: none; outline: none; background: transparent;
+  font-size: 14px; color: var(--color-text-dark);
+  width: 100%; font-family: inherit;
+}
+.search-input::placeholder { color: #b0b8c4; }
+
+/* ===== Filter Buttons ===== */
+.filter-btn {
+  padding: 7px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: #fff; color: var(--color-text-muted);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.filter-btn:hover { border-color: #1e5f8e; color: #1e5f8e; }
+.filter-active    { background: #1e5f8e; border-color: #1e5f8e; color: #fff; }
+
+/* ===== Status Badges ===== */
+.status-badge {
+  display: inline-block; padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px; font-weight: 700;
+}
+.badge-approved  { background: #e0f5f3; color: #0f6e56; }
+.badge-pending   { background: #fdf0d5; color: #b45309; }
+.badge-suspended { background: #fde8e8; color: #dc2626; }
+.badge-rejected  { background: #fde8e8; color: #dc2626; }
+
+/* ===== Type Pills ===== */
+.type-pill { display: inline-block; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; }
+.pill-gov  { background: #e0f5f3; color: #0f6e56; }
+.pill-priv { background: #fdf0d5; color: #b45309; }
+
+/* ===== Table ===== */
+.table-scroll { overflow-x: auto; }
+.table-card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 20px; }
+.admin-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.admin-table th { text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 600; color: var(--color-text-muted); border-bottom: 2px solid var(--color-border); background: #f8fafc; white-space: nowrap; }
+.admin-table td { padding: 12px; font-size: 13px; color: var(--color-text-dark); border-bottom: 1px solid var(--color-border); vertical-align: middle; }
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: #f8fafc; }
+
+/* ===== Action Buttons ===== */
+.action-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+.btn-info    { padding: 5px 8px; background: #eef1f4; color: #475569; border: none; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; transition: var(--transition-fast); }
+.btn-info:hover    { background: #475569; color: #fff; }
+.btn-approve { padding: 5px 8px; background: #e0f5f3; color: #0f6e56; border: none; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; transition: var(--transition-fast); }
+.btn-approve:hover { background: #0f6e56; color: #fff; }
+.btn-reject  { padding: 5px 8px; background: #fde8e8; color: #dc2626; border: none; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; transition: var(--transition-fast); }
+.btn-reject:hover  { background: #dc2626; color: #fff; }
+.btn-suspend { padding: 5px 8px; background: #fdf0d5; color: #b45309; border: none; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; transition: var(--transition-fast); }
+.btn-suspend:hover { background: #b45309; color: #fff; }
+.btn-restore { padding: 5px 8px; background: #e0f5f3; color: #0f6e56; border: none; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; transition: var(--transition-fast); }
+.btn-restore:hover { background: #0f6e56; color: #fff; }
+.btn-delete  { padding: 5px 8px; background: #fde8e8; color: #dc2626; border: none; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; transition: var(--transition-fast); }
+.btn-delete:hover  { background: #dc2626; color: #fff; }
+
+/* ===== Full Action Buttons (modal) ===== */
+.btn-approve-full, .btn-reject-full, .btn-suspend-full,
+.btn-restore-full, .btn-delete-full {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 10px 16px;
+  border: none; border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-approve-full { background: #0f6e56; color: #fff; }
+.btn-approve-full:hover { background: #0a5240; }
+.btn-reject-full  { background: #fde8e8; color: #dc2626; }
+.btn-reject-full:hover  { background: #dc2626; color: #fff; }
+.btn-suspend-full { background: #fdf0d5; color: #b45309; }
+.btn-suspend-full:hover { background: #b45309; color: #fff; }
+.btn-restore-full { background: #e0f5f3; color: #0f6e56; }
+.btn-restore-full:hover { background: #0f6e56; color: #fff; }
+.btn-delete-full  { background: #fde8e8; color: #dc2626; }
+.btn-delete-full:hover  { background: #dc2626; color: #fff; }
+
+/* ===== Detail Items ===== */
+.detail-item  { display: flex; align-items: flex-start; gap: 10px; }
+.detail-icon  { color: #1e5f8e; margin-top: 2px; flex-shrink: 0; }
+.detail-label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-muted); margin-bottom: 2px; }
+.detail-value { display: block; font-size: 13px; font-weight: 600; color: var(--color-text-dark); }
+
+/* ===== Modal ===== */
+.modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.5); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+.modal-card { background: #fff; border-radius: var(--radius-lg); padding: 32px; width: 90%; max-width: 360px; text-align: center; box-shadow: var(--shadow-lg); position: relative; }
+.modal-close { position: absolute; top: 14px; right: 14px; background: none; border: none; color: var(--color-text-light); cursor: pointer; display: flex; transition: var(--transition-fast); }
+.modal-close:hover { color: var(--color-text-dark); }
+.modal-icon { width: 56px; height: 56px; border-radius: 50%; background: #fee2e2; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.modal-card h3 { font-size: 19px; font-weight: 700; color: var(--color-text-dark); margin-bottom: 8px; }
+.modal-card p  { font-size: 14px; color: var(--color-text-muted); margin-bottom: 24px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 12px; }
+.modal-actions .btn-secondary { flex: 1; padding: 12px; }
+.btn-secondary { background: #f1f5f9; color: var(--color-text-medium); border: none; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition-fast); }
+.btn-secondary:hover { background: #e2e8f0; }
+
+/* ===== Empty State ===== */
+.empty-state { text-align: center; padding: 40px; color: var(--color-text-muted); font-size: 14px; }
+
+/* ===== Toolbar + Content ===== */
+.manage-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.filter-row     { display: flex; gap: 8px; flex-wrap: wrap; }
+.manage-content { margin: 20px 24px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 24px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .manage-content  { margin: 14px; }
+  .manage-toolbar  { flex-direction: column; }
+  .admin-page-hero { margin: 14px; height: 130px; }
+  .admin-page-hero-content h1 { font-size: 18px; }
+}

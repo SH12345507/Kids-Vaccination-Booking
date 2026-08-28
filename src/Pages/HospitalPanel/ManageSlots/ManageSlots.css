@@ -1,0 +1,109 @@
+/* ===========================
+   MANAGE SLOTS - PAGE SPECIFIC
+   Layout  => HospitalLayout.css
+   Shared  => Hospitalshared.css
+  
+   =========================== */
+
+/* ===== Summary ===== */
+.slots-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.summary-card {
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 16px 20px; box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; gap: 14px;
+}
+.summary-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.summary-home .summary-icon     { background-color: #f0ebff; }
+.summary-hospital .summary-icon { background-color: #e8f1fc; }
+.summary-info h3 { font-size: 22px; font-weight: 700; color: var(--color-text-dark); line-height: 1; margin-bottom: 3px; }
+.summary-info p  { font-size: 12px; color: var(--color-text-muted); }
+
+/* ===== Add Card ===== */
+.add-slot-card { background: #fff; border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-sm); }
+.add-slot-card h2 { font-size: 16px; font-weight: 700; color: var(--color-text-dark); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+.slot-label { display: block; font-size: 12px; font-weight: 600; color: var(--color-text-medium); margin-bottom: 6px; }
+.slot-input {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid var(--color-border); border-radius: var(--radius-md);
+  font-size: 13px; color: var(--color-text-dark);
+  background-color: #f8fafc; outline: none;
+  transition: var(--transition-fast); font-family: inherit;
+}
+.slot-input:focus { border-color: var(--color-border-focus); background-color: #fff; box-shadow: var(--shadow-glow); }
+
+/* ===== Table ===== */
+.slots-table-card { background: #fff; border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+.slots-table-card h2 { font-size: 16px; font-weight: 700; color: var(--color-text-dark); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.slots-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.slots-table th { text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 600; color: var(--color-text-muted); border-bottom: 2px solid var(--color-border); background-color: #f8fafc; white-space: nowrap; }
+.slots-table td { padding: 12px; font-size: 13px; color: var(--color-text-dark); border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+.slots-table tr:last-child td { border-bottom: none; }
+.slots-table tr:hover td { background-color: #f8fafc; }
+
+/* ===== Badges ===== */
+.badge-slot { display: inline-block; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; }
+.badge-available { background-color: #e0f5f3; color: #0f6e56; }
+.badge-full      { background-color: #fde8e8; color: #dc2626; }
+.type-badge      { display: inline-block; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; }
+.type-home       { background-color: #f0ebff; color: #7c3aed; }
+.type-hospital   { background-color: #e8f1fc; color: #1e5f8e; }
+
+/* ===== Slot Form Row ===== */
+.slot-form-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.slot-field { flex: 1; min-width: 100px; }
+.btn-add-slot {
+  padding: 10px 18px; background-color: #1e5f8e; color: #fff;
+  border: none; border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap; height: 40px; transition: var(--transition-fast);
+}
+.btn-add-slot:hover { background-color: var(--color-primary-dark); }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .slots-summary { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .slots-summary { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .slot-form-row { flex-direction: column; }
+  .slot-field    { width: 100%; }
+  .btn-add-slot  { width: 100%; justify-content: center; }
+}
+/* ===== Multi-Day Selector ===== */
+.days-label {
+  font-size: 12px; font-weight: 600;
+  color: var(--color-text-medium);
+  margin: 14px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.days-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.day-btn {
+  padding: 7px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: #f8fafc;
+  color: var(--color-text-muted);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition-fast);
+}
+
+.day-btn:hover { border-color: #1e5f8e; color: #1e5f8e; }
+
+.day-btn-active {
+  background-color: #1e5f8e;
+  border-color: #1e5f8e;
+  color: #ffffff;
+}

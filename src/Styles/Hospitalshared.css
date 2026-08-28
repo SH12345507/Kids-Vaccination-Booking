@@ -1,0 +1,218 @@
+/* ===========================
+   HOSPITAL SHARED - COMMON STYLES
+   Import this in every hospital page
+   =========================== */
+
+/* ===== Filter Buttons ===== */
+.filter-btn {
+  padding: 7px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: #fff; color: var(--color-text-muted);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.filter-btn:hover { border-color: #1e5f8e; color: #1e5f8e; }
+.filter-active { background: #1e5f8e; border-color: #1e5f8e; color: #fff; }
+
+/* ===== Empty State ===== */
+.empty-state {
+  text-align: center; padding: 40px;
+  color: var(--color-text-muted); font-size: 14px;
+  background: #fff; border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== Action Buttons ===== */
+.action-btns { display: flex; gap: 8px; }
+
+.btn-edit {
+  padding: 5px 10px;
+  background-color: #e8f1fc; color: #2563eb;
+  border: none; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: var(--transition-fast);
+}
+.btn-edit:hover { background-color: #2563eb; color: #fff; }
+
+.btn-delete {
+  padding: 5px 10px;
+  background-color: #fde8e8; color: #dc2626;
+  border: none; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: var(--transition-fast);
+}
+.btn-delete:hover { background-color: #dc2626; color: #fff; }
+
+/* ===========================
+   ADD / EDIT FORM MODAL
+   (used by ManageStock, ManageSlots edit dialogs)
+   NOTE: for confirm/logout-style modals (icon + centered text
+   + Cancel/Danger buttons) use .confirm-modal-* from
+   HospitalLayout.css instead — do NOT reuse these class names
+   for that pattern, they were colliding before and have been
+   split apart.
+   =========================== */
+.modal-overlay {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(15, 23, 42, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999;
+}
+.modal-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  width: 90%; max-width: 460px;
+  box-shadow: var(--shadow-lg);
+}
+.modal-card h2 {
+  font-size: 18px; font-weight: 700;
+  color: var(--color-text-dark); margin-bottom: 18px;
+}
+.modal-actions { display: flex; gap: 12px; margin-top: 18px; }
+
+.btn-cancel {
+  flex: 1; padding: 11px;
+  background-color: #f1f5f9; color: var(--color-text-medium);
+  border: none; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-cancel:hover { background-color: #e2e8f0; }
+
+.btn-save {
+  flex: 1; padding: 11px;
+  background-color: #1e5f8e; color: #fff;
+  border: none; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-save:hover { background-color: var(--color-primary-dark); }
+
+/* ===== Detail Items ===== */
+.detail-item { display: flex; align-items: flex-start; gap: 10px; }
+.detail-icon { color: #1e5f8e; margin-top: 2px; flex-shrink: 0; }
+.detail-label { display: block; font-size: 11px; font-weight: 600; color: var(--color-text-muted); margin-bottom: 2px; }
+.detail-value { display: block; font-size: 13px; font-weight: 600; color: var(--color-text-dark); }
+
+/* ===== Table Scroll ===== */
+.table-scroll { overflow-x: auto; }
+
+/* ===========================
+   HOSPITAL PAGE HERO (shared across all hospital dashboard pages)
+   Naming follows the same convention as Admin's .admin-page-hero
+   in Adminshared.css, so both sections stay consistent.
+   Base = 160px hero used by Schedule / Slots / Rating.
+   Modifiers below adjust height/margin/padding for pages
+   that need a taller or wider hero (Appointments, Stock,
+   Dashboard welcome banner).
+   =========================== */
+.hospital-page-hero {
+  position: relative;
+  margin: 20px 24px 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 160px;
+  display: flex; align-items: center;
+}
+.hospital-page-hero-img {
+  position: absolute; top: -10px; left: -10px;
+  width: calc(100% + 20px); height: calc(100% + 20px);
+  object-fit: cover; filter: blur(2px);
+}
+.hospital-page-hero-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(15,42,67,0.75), rgba(14,116,144,0.6));
+}
+.hospital-page-hero-content { position: relative; z-index: 2; padding: 24px 32px; }
+.hospital-page-hero-content h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.hospital-page-hero-content p  { font-size: 13px; color: rgba(255,255,255,0.9); }
+
+/* ---- Modifier: taller hero (e.g. Appointments) ---- */
+.hospital-page-hero-tall { height: 180px; }
+
+/* ---- Modifier: wide hero with bigger text (e.g. Manage Stock) ---- */
+.hospital-page-hero-wide {
+  margin: 24px 32px 0;
+  height: 180px;
+}
+.hospital-page-hero-wide .hospital-page-hero-content { padding: 32px 40px; }
+.hospital-page-hero-wide .hospital-page-hero-content h1 { font-size: 26px; margin-bottom: 8px; }
+.hospital-page-hero-wide .hospital-page-hero-content p  { font-size: 14px; }
+
+/* ---- Modifier: extra-large welcome hero (Dashboard) ---- */
+.hospital-page-hero-xl {
+  margin: 24px 32px 0;
+  height: 220px;
+}
+.hospital-page-hero-xl .hospital-page-hero-content { padding: 32px 40px; max-width: 600px; }
+.hospital-page-hero-xl .hospital-page-hero-content h1 { font-size: 28px; margin-bottom: 10px; }
+.hospital-page-hero-xl .hospital-page-hero-content p  { font-size: 14px; line-height: 1.6; }
+
+/* ===== Hospital Page Hero — Responsive ===== */
+@media (max-width: 768px) {
+  .hospital-page-hero      { margin: 14px; height: 130px; }
+  .hospital-page-hero-tall { height: 140px; }
+  .hospital-page-hero-wide { margin: 16px; height: 150px; }
+  .hospital-page-hero-xl   { margin: 16px; height: 180px; }
+}
+@media (max-width: 480px) {
+  .hospital-page-hero-content h1 { font-size: 18px; }
+}
+
+/* ===========================
+   PAGE CONTENT WRAPPER (shared)
+   Base = used by Schedule / Appointments / Rating.
+   Modifier = wider gutters + gap for Stock / Slots style pages.
+   =========================== */
+.page-content {
+  margin: 20px 24px;
+  display: flex; flex-direction: column;
+  gap: 16px;
+  padding-bottom: 24px;
+}
+.page-content-wide {
+  margin: 24px 32px;
+  gap: 24px;
+  padding-bottom: 0;
+}
+.page-content-loose {
+  margin: 20px 24px;
+  gap: 20px;
+  padding-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .page-content       { margin: 14px; }
+  .page-content-wide  { margin: 16px; }
+  .page-content-loose { margin: 14px; gap: 14px; }
+}
+
+/* ===== Page Filter Row (shared) ===== */
+.page-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ===== Search Bar (shared) ===== */
+.search-bar {
+  display: flex; align-items: center; gap: 10px;
+  background-color: #f8fafc;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  transition: var(--transition-fast);
+}
+.search-bar:focus-within {
+  border-color: var(--color-border-focus);
+  background-color: #ffffff;
+  box-shadow: var(--shadow-glow);
+}
+.search-icon { color: var(--color-text-light); flex-shrink: 0; }
+.search-input {
+  border: none; outline: none; background: transparent;
+  width: 100%; font-size: 14px; color: var(--color-text-dark);
+  font-family: inherit;
+}
+.search-input::placeholder { color: #b0b8c4; }

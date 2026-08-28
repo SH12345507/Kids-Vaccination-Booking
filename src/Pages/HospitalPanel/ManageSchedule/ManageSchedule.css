@@ -1,0 +1,137 @@
+/* ===========================
+   MANAGE SCHEDULE - PAGE SPECIFIC
+   Layout  => HospitalLayout.css
+   Shared  => Hospitalshared.css
+
+   =========================== */
+
+/* ===== Child Card ===== */
+.child-card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; transition: box-shadow 0.25s ease; }
+.child-card:hover { box-shadow: var(--shadow-md); }
+.child-header { display: flex; align-items: center; gap: 14px; padding: 18px 22px; cursor: pointer; transition: background 0.2s ease; }
+.child-header:hover { background: #f8fafc; }
+.child-avatar { width: 42px; height: 42px; background-color: #1e5f8e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.child-info { flex: 1; }
+.child-info h3 { font-size: 16px; font-weight: 700; color: var(--color-text-dark); margin-bottom: 3px; }
+.child-info p  { font-size: 12px; color: var(--color-text-muted); }
+.child-meta { display: flex; align-items: center; gap: 12px; color: var(--color-text-muted); }
+.vaccine-count { font-size: 12px; font-weight: 600; background: #e8f1fc; color: #1e5f8e; padding: 4px 10px; border-radius: var(--radius-pill); }
+
+/* ===== Vaccine Section ===== */
+.vaccine-section { border-top: 1px solid var(--color-border); padding: 16px 22px; background: #fafbfc; }
+.schedule-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+.schedule-table th { text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 600; color: var(--color-text-muted); border-bottom: 2px solid var(--color-border); background: #f1f5f9; white-space: nowrap; }
+.schedule-table td { padding: 11px 12px; font-size: 13px; color: var(--color-text-dark); border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+.schedule-table tr:last-child td { border-bottom: none; }
+.schedule-table tr:hover td { background: #f8fafc; }
+
+/* ===== Vaccine Name Cell ===== */
+.vaccine-name-cell { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+
+/* ===== Status Badges ===== */
+.status-badge   { display: inline-block; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; }
+.status-given   { background: #e0f5f3; color: #0f6e56; }
+.status-pending { background: #fdf0d5; color: #b45309; }
+
+/* ===== Next Date Input =====
+   NOTE: JSX previously referenced a shared "slot-input" class
+   that only existed in ManageSlots.css (which this page never
+   imports) — the input was silently unstyled. Defining it here
+   as .next-date-input so it's self-contained. */
+.next-date-input {
+  min-width: 150px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--color-text-dark);
+  background-color: #f8fafc;
+  outline: none;
+  transition: var(--transition-fast);
+  font-family: inherit;
+}
+.next-date-input:focus {
+  border-color: var(--color-border-focus);
+  background-color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+
+/* ===== Mark Button ===== */
+.btn-mark {
+  padding: 5px 12px; background: #fdf0d5; color: #b45309;
+  border: none; border-radius: var(--radius-sm);
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: var(--transition-fast);
+}
+.btn-mark:hover { background: #f59e0b; color: #fff; }
+.btn-mark-done { background: #e0f5f3 !important; color: #0f6e56 !important; cursor: default; }
+
+.row-given td { background-color: #f0fdf8 !important; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .child-info p { display: none; }
+}
+
+/* ===== Undo Button ===== */
+.btn-undo-sm {
+  padding: 5px 10px;
+  background: #eef1f4; color: #475569;
+  border: none; border-radius: var(--radius-sm);
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: var(--transition-fast);
+}
+.btn-undo-sm:hover { background: #475569; color: #fff; }
+/* ===== Pending Requests ===== */
+.pending-requests-section {
+  margin-bottom: 32px;
+}
+
+.pending-request-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fffbeb;
+  border: 1.5px solid #fde68a;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+
+.pending-request-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.btn-approve,
+.btn-reject {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.btn-approve {
+  background-color: #0f6e56;
+  color: #fff;
+}
+
+.btn-reject {
+  background-color: #fff;
+  color: #b91c1c;
+  border: 1px solid #b91c1c;
+}
+
+.btn-approve:hover,
+.btn-reject:hover {
+  opacity: 0.85;
+}
