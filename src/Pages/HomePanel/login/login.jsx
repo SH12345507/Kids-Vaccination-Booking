@@ -6,7 +6,6 @@ import PageHero from "../../../components/PageHero/PageHero";
 import Footer from "../../../components/Footer/Footer";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Clock } from "lucide-react";
 
-
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +14,6 @@ const Login = () => {
   const [pendingApproval, setPendingApproval] = useState(false); // ✅ hospital awaiting approval
 
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
 
   useEffect(() => {
     setFormData({ email: "", password: "" });
@@ -31,7 +29,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE}/auth/login`, {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
