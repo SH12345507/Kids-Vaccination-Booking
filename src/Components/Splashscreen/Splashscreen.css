@@ -1,0 +1,53 @@
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: linear-gradient(135deg, #eff6ff 0%, #f0fdfa 50%, #ffffff 100%);
+  z-index: 9999;
+}
+
+.splash-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.splash-brand {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e5f8e;
+  letter-spacing: 1px;
+}
+
+.splash-spinner {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin-top: 10px;
+}
+
+.splash-spinner-bar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;
+  height: 12px;
+  margin-left: -2px;
+  background-color: #1e5f8e;
+  border-radius: 4px;
+  transform-origin: 2px 22px; /* rotates around the spinner's center */
+  animation: splash-fade 1.2s linear infinite;
+}
+
+@keyframes splash-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.15;
+  }
+}
