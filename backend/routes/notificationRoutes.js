@@ -9,7 +9,7 @@ const {
 } = require("../controllers/notificationController");
 
 // ✅ No role-specific middleware — works for parent, hospital, AND admin,
-// since NotificationBell.jsx and the Settings pages are used by all three.
+// since NotificationBell.jsx and the Settings Pages are used by all three.
 router.get("/", protect, getMyNotifications);
 router.put("/mark-all-read", protect, markAllRead);
 router.get("/preferences", protect, getPreferences);

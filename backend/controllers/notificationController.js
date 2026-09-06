@@ -47,7 +47,7 @@ const getPreferences = async (req, res) => {
 // ===== UPDATE NOTIFICATION PREFERENCES =====
 // Accepts any subset of toggle keys (e.g. { smsAlerts: true }) and merges
 // them into whatever is already saved — this is what makes the Settings
-// pages' individual toggle switches work without needing to resend everything.
+// Pages' individual toggle switches work without needing to resend everything.
 const updatePreferences = async (req, res) => {
   try {
     const Model = roleModelMap[req.user.role];

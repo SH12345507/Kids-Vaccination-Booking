@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SplashScreen from "./Components/SplashScreen/SplashScreen";
+import Splashscreen from "./Components/Splashscreen/Splashscreen";
 import Home from "./Pages/HomePanel/Home/Home";
-import HospitalSignup from "./pages/HomePanel/HospitalSignup/HospitalSignup";
-import Login from "./pages/HomePanel/Login/Login";
-import ParentSignup from "./pages/HomePanel/ParentSignup/ParentSignup";
-import VaccineInfo from "./pages/HomePanel/VaccineInfo/VaccineInfo";
-import VaccineGuidance from "./pages/HomePanel/VaccineGuidance/VaccineGuidance";
-import ForgotPassword from "./pages/HomePanel/ForgotPassword/ForgotPassword";
+import HospitalSignup from "./Pages/HomePanel/HospitalSignup/HospitalSignup";
+import Login from "./Pages/HomePanel/login/login";
+import ParentSignup from "./Pages/HomePanel/ParentSignup/ParentSignup";
+import VaccineInfo from "./Pages/HomePanel/VaccineInfo/VaccineInfo";
+import VaccineGuidance from "./Pages/HomePanel/VaccineGuidance/VaccineGuidance";
+import ForgotPassword from "./Pages/HomePanel/ForgotPassword/ForgotPassword";
 import ParentDashboard from "./Pages/ParentPanel/ParentDashboard/ParentDashboard";
 import AddChild from "./Pages/ParentPanel/AddChild/AddChild";
 import VaccineSchedule from "./Pages/ParentPanel/VaccineSchedule/VaccineSchedule";
-import About from "./pages/About/About";
+import About from "./Pages/About/About";
 import Settings from "./Pages/ParentPanel/Settings/Settings";
 import ChangePassword from "./Pages/ParentPanel/ChangePassword/ChangePassword";
 import ManageChildren from "./Pages/ParentPanel/ManageChildren/ManageChildren";
@@ -36,8 +36,8 @@ import ASettings from "./Pages/AdminPanel/ASettings/ASettings";
 import AProfile from "./Pages/AdminPanel/AProfile/AProfile";
 import ANotifications from "./Pages/AdminPanel/ANotifications/ANotifications";
 import AChangePassword from "./Pages/AdminPanel/AChangePassword/AChangePassword";
-import FloatingMenu from "./components/FloatingMenu/FloatingMenu";
-import Hospitalmodal from "./Pages/ParentPanel/Hospitalmodal/HospitalModal";
+import FloatingMenu from "./Components/FloatingMenu/FloatingMenu";
+import HospitalModal from "./Pages/ParentPanel/HospitalModal/HospitalModal";
 
 
 
@@ -50,7 +50,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (showSplash) return <SplashScreen />;
+  if (showSplash) return <Splashscreen />;
 
   return (
     <BrowserRouter>
@@ -90,7 +90,7 @@ function App() {
         <Route path="/admin-settings/profile" element={<AProfile />} />
         <Route path="/admin-settings/notifications" element={<ANotifications />} />
         <Route path="/admin-settings/password" element={<AChangePassword />} />
-        <Route path="/hospital-modal" element={<Hospitalmodal />} />
+        <Route path="/hospital-modal" element={<HospitalModal />} />
       </Routes>
        <FloatingMenu />
     </BrowserRouter>

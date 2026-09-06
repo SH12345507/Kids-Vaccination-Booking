@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./ManageRatings.css";
-import "../../../styles/AdminShared.css";
-import Footer from "../../../components/Footer/Footer";
-import AdminLayout from "../../../components/AdminLayout/AdminLayout";
+import "../../../styles/Adminshared.css";
+import Footer from "../../../Components/Footer/Footer";
+import AdminLayout from "../../../Components/AdminLayout/AdminLayout";
 import {
   Star, Search, AlertTriangle, Trash2, X,
   User, Phone, Mail, Building2, MapPin, ShieldOff,

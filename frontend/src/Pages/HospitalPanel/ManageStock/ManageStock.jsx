@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ManageStock.css";
-import hospitalImg from "../../../assets/Hdashboard.jpeg";
+import hospitalImg from "../../../assets/HDashboard.jpeg";
 import "../../../styles/Hospitalshared.css";
 import Footer from "../../../Components/Footer/Footer";
 import HospitalLayout from "../../../Components/HospitalLayout/HospitalLayout";

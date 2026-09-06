@@ -103,11 +103,11 @@
 .table-scroll { overflow-x: auto; }
 
 /* ===========================
-   HOSPITAL PAGE HERO (shared across all hospital dashboard pages)
+   HOSPITAL PAGE HERO (shared across all hospital dashboard Pages)
    Naming follows the same convention as Admin's .admin-page-hero
    in Adminshared.css, so both sections stay consistent.
    Base = 160px hero used by Schedule / Slots / Rating.
-   Modifiers below adjust height/margin/padding for pages
+   Modifiers below adjust height/margin/padding for Pages
    that need a taller or wider hero (Appointments, Stock,
    Dashboard welcome banner).
    =========================== */
@@ -167,7 +167,7 @@
 /* ===========================
    PAGE CONTENT WRAPPER (shared)
    Base = used by Schedule / Appointments / Rating.
-   Modifier = wider gutters + gap for Stock / Slots style pages.
+   Modifier = wider gutters + gap for Stock / Slots style Pages.
    =========================== */
 .page-content {
   margin: 20px 24px;

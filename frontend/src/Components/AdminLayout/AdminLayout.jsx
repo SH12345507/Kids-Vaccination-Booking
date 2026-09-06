@@ -40,7 +40,7 @@ const AdminLayout = ({ activeModule, topbarTitle, children }) => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  // ✅ Frontend guard — only a logged-in ADMIN can view these pages.
+  // ✅ Frontend guard — only a logged-in ADMIN can view these Pages.
   useEffect(() => {
     if (!token || role !== "admin") {
       navigate("/login", { replace: true });
