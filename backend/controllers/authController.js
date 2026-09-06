@@ -26,32 +26,25 @@ const parentSignup = async (req, res) => {
       phone,
     });
 
+    // ✅ notify every admin about the new parent registration
+    const admins = await Admin.find();
+    for (const admin of admins) {
+      await sendNotification({
+        recipientId: admin._id,
+        role: "admin",
+        title: "New Parent Registration",
+        message: `${parent.name} has just created a parent account.`,
+        user: admin,
+      });
+    }
+
     const token = jwt.sign(
       { id: parent._id, role: "parent" },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    // ✅ respond immediately — don't make the user wait for the admin
-    // notification to finish saving (only ONE response is ever sent)
     res.status(201).json({ message: "Signup successful", token, role: "parent" });
-
-    // ✅ notify every admin in the background (dashboard notification only,
-    // no email) — respects each admin's own toggle. Errors are logged, not
-    // thrown, since the response has already been sent.
-    const admins = await Admin.find();
-    for (const admin of admins) {
-      sendNotification({
-        recipientId: admin._id,
-        role: "admin",
-        title: "New Parent Signup",
-        message: `${parent.name} has signed up.`,
-        category: "parentSignups",
-        user: admin,
-      }).catch((err) =>
-        console.error("Failed to notify admin about new parent:", err.message)
-      );
-    }
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -91,42 +84,20 @@ const hospitalSignup = async (req, res) => {
       certificate: certificatePath,
     });
 
-    // ✅ respond immediately — don't make the hospital wait for admin
-    // notifications/emails to finish sending
-    res.status(201).json({ message: "Hospital registered, awaiting approval" });
-
-    // ✅ notify every admin in the background — dashboard notification +
-    // email. Errors are logged, not thrown, since the response has already
-    // been sent. This also means a slow/hanging SMTP call can no longer
-    // cause the signup request itself to time out or 500.
+    // ✅ notify every admin — respects each admin's own "Hospital Requests" toggle
     const admins = await Admin.find();
-
     for (const admin of admins) {
-      sendNotification({
+      await sendNotification({
         recipientId: admin._id,
         role: "admin",
         title: "New Hospital Registration",
         message: `${hospital.name} has registered and is awaiting approval.`,
         category: "hospitalRequests",
         user: admin,
-      }).catch((err) =>
-        console.error("Failed to notify admin about new hospital:", err.message)
-      );
-
-      if (admin.email) {
-        sendEmail({
-          to: admin.email,
-          subject: "New Hospital Registration — Approval Needed",
-          html: `
-            <p>A new hospital has registered and is awaiting approval:</p>
-            <p><strong>${hospital.name}</strong> (${hospital.email})</p>
-            <p>Please review and approve it from the admin dashboard.</p>
-          `,
-        }).catch((err) =>
-          console.error("Failed to email admin about new hospital:", err.message)
-        );
-      }
+      });
     }
+
+    res.status(201).json({ message: "Hospital registered, awaiting approval" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -242,7 +213,6 @@ const forgotPassword = async (req, res) => {
       message: "If an account with that email exists, a code has been sent.",
     });
   } catch (error) {
-    console.error("forgotPassword failed:", error); // ✅ now visible in Railway Deploy Logs
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

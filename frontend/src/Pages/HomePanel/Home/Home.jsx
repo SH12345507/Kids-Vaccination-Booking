@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import logo from "../../../assets/logo.png";
-import vaccinationImg from "../../../assets/Vaccination-hero.jpeg";
+import vaccinationImg from "../../../assets/vaccination-hero.jpeg";
 import docMotherImg from "../../../assets/mother.jpeg";
 import handGlovesImg from "../../../assets/handGloves.jpeg";
-import Footer from "../../../Components/Footer/Footer";
+import Footer from "../../../components/Footer/Footer";
 import {
   Info, BookOpen, Users, PlusSquare, Shield,
    UserCircle, ArrowRight, ChevronLeft, ChevronRight,

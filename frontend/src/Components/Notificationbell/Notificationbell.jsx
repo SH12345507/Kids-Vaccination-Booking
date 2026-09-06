@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Bell } from "lucide-react";
-import "./Notificationbell.css";
+import "./NotificationBell.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || `${import.meta.env.VITE_API_URL}/api`;
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
 
 // ✅ Self-contained — fetches the logged-in user's OWN notifications
 // (works for parent/hospital/admin, whichever role is logged in) and keeps
