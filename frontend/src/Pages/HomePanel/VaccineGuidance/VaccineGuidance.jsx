@@ -1,8 +1,8 @@
 import React from "react";
 import "./VaccineGuidance.css";
 import guidanceImg from "../../../assets/syringe.jpeg";
-import PageHero from "../../../components/PageHero/PageHero";
-import Footer from "../../../components/Footer/Footer";
+import PageHero from "../../../Components/PageHero/PageHero";
+import Footer from "../../../Components/Footer/Footer";
 import { HeartPulse } from "lucide-react";
 
 const VaccineGuidance = () => {

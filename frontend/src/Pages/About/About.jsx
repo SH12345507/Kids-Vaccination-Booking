@@ -1,8 +1,8 @@
 import React from "react";
-import PageHero from "../../components/PageHero/PageHero";
-import Footer from "../../components/Footer/Footer";
+import PageHero from "../../Components/PageHero/PageHero";
+import Footer from "../../Components/Footer/Footer";
 import "./About.css";
-import aboutImg from "../../assets/vaccination-hero.jpeg";
+import aboutImg from "../../assets/Vaccination-hero.jpeg";
 import {
   ShieldCheck,
   CalendarCheck,

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./HospitalSignup.css";
 import hospitalImg from "../../../assets/Hospital.png";
-import PageHero from "../../../components/PageHero/PageHero";
-import Footer from "../../../components/Footer/Footer";
+import PageHero from "../../../Components/PageHero/PageHero";
+import Footer from "../../../Components/Footer/Footer";
 import {
   Plus, Mail, Phone, MapPin, Lock, EyeOff, Eye,
   UploadCloud, Building2, CreditCard, Home, Hospital, Clock,
@@ -67,7 +67,7 @@ const HospitalSignup = () => {
       payload.append("homeVisitCharges", formData.homeVisitCharges || 0);
       payload.append("certificate", file); // ✅ actual file goes here
 
-      const response = await fetch("http://localhost:5000/api/auth/hospital-signup", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/hospital-signup`, {
         method: "POST",
         body: payload, // ✅ no Content-Type header — browser sets multipart boundary itself
       });

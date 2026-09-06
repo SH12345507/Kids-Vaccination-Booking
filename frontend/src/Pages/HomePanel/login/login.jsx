@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
+import "./login.css";
 import bgImage from "../../../assets/childVaccine.jpeg";
-import PageHero from "../../../components/PageHero/PageHero";
-import Footer from "../../../components/Footer/Footer";
+import PageHero from "../../../Components/PageHero/PageHero";
+import Footer from "../../../Components/Footer/Footer";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Clock } from "lucide-react";
 
 const Login = () => {
@@ -29,7 +29,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

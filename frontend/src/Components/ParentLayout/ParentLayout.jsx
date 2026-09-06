@@ -60,7 +60,7 @@ const ParentLayout = ({ topbarTitle, children }) => {
     setParentLoading(true);
     setParentError("");
     try {
-      const response = await fetch("http://localhost:5000/api/parent/profile", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/parent/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await response.json();
@@ -85,7 +85,7 @@ const ParentLayout = ({ topbarTitle, children }) => {
   // ✅ One update function used by the Profile page. After saving, it updates
   // the shared state so every page (and the topbar avatar) reflects it instantly.
   const updateProfile = async (fields) => {
-    const response = await fetch("http://localhost:5000/api/parent/profile", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/parent/profile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

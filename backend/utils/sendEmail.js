@@ -3,10 +3,12 @@ const nodemailer = require("nodemailer");
 // ✅ Reuses the SMTP credentials from .env — works for Mailtrap (testing)
 // or Gmail (real delivery). Port 465 requires secure:true, port 587 uses
 // secure:false with STARTTLS — this picks the right one automatically.
+
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: Number(process.env.MAIL_PORT),
   secure: Number(process.env.MAIL_PORT) === 465,
+  family: 4, // Force IPv4 — Railway containers can't reach Gmail over IPv6
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,

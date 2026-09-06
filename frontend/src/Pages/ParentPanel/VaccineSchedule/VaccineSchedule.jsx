@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./VaccineSchedule.css";
 import PDashboardimg from "../../../assets/PDashboard.jpeg";
-import Footer from "../../../components/Footer/Footer";
-import ParentLayout from "../../../components/ParentLayout/ParentLayout";
+import Footer from "../../../Components/Footer/Footer";
+import ParentLayout from "../../../Components/ParentLayout/ParentLayout";
 import {
   CalendarCheck,
   FileText,
@@ -14,9 +14,9 @@ import {
   ChevronUp,
   Eye,
 } from "lucide-react";
-import HospitalModal from "../Hospitalmodal/HospitalModal";
+import HospitalModal from "../HospitalModal/HospitalModal";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || `${import.meta.env.VITE_API_URL}/api`;
 
 const VaccineSchedule = () => {
   const navigate = useNavigate();

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./VaccineInfo.css";
 import syringeImg from "../../../assets/syringe.jpeg";
-import PageHero from "../../../components/PageHero/PageHero";
-import Footer from "../../../components/Footer/Footer";
+import PageHero from "../../../Components/PageHero/PageHero";
+import Footer from "../../../Components/Footer/Footer";
 import { Syringe } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
 
 const VaccineInfo = () => {
   const token = localStorage.getItem("token");

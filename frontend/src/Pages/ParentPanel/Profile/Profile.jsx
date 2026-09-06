@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../../styles/ParentShared.css";
 import "./Profile.css";
-import Footer from "../../../components/Footer/Footer";
+import Footer from "../../../Components/Footer/Footer";
 import ParentLayout, { useParent } from "../../../Components/ParentLayout/ParentLayout";
 import { User, Mail, Phone, CheckCircle2 } from "lucide-react";
 

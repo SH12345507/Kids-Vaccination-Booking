@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddChild.css";
 import motherImg from "../../../assets/mother.jpeg";
-import PageHero from "../../../components/PageHero/PageHero";
-import Footer from "../../../components/Footer/Footer";
-import HospitalModal from "../Hospitalmodal/HospitalModal";
+import PageHero from "../../../Components/PageHero/PageHero";
+import Footer from "../../../Components/Footer/Footer";
+import HospitalModal from "../HospitalModal/HospitalModal";
 import {
   User,
   FileText,
@@ -22,7 +22,7 @@ import {
   Syringe,
 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || `${import.meta.env.VITE_API_URL}/api`;
 
 const AddChild = () => {
   const navigate = useNavigate();
