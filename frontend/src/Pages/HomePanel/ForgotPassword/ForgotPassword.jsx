@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
-import Footer from "../../../components/Footer/Footer";
+import Footer from "../../../Components/Footer/Footer";
 import { ShieldPlus, Mail, KeyRound, Lock, ArrowLeft, CheckCircle } from "lucide-react";
 
 // ✅ Steps: "email" -> "otp" -> "password" -> "done"
@@ -22,7 +22,7 @@ const ForgotPassword = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/forgot-password", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/verify-otp", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/verify-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
@@ -82,7 +82,7 @@ const ForgotPassword = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/reset-password", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp, password: newPassword }),

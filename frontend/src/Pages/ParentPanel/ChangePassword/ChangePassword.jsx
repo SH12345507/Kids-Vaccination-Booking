@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/ParentShared.css";
 import "./ChangePassword.css";
-import Footer from "../../../components/Footer/Footer";
+import Footer from "../../../Components/Footer/Footer";
 import ParentLayout from "../../../Components/ParentLayout/ParentLayout";
 import { Lock, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 

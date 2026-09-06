@@ -5,7 +5,7 @@ import "./Notifications.css";
 import Footer from "../../../Components/Footer/Footer";
 import ParentLayout from "../../../Components/ParentLayout/ParentLayout";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || `${import.meta.env.VITE_API_URL}/api`;
 
 const Notifications = () => {
   const navigate = useNavigate();

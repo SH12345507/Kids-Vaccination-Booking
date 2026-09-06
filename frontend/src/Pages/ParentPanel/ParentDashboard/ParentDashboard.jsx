@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./ParentDashboard.css";
 import motherImg from "../../../assets/PDashboard.jpeg";
-import Footer from "../../../components/Footer/Footer";
-import ParentLayout from "../../../components/ParentLayout/ParentLayout";
+import Footer from "../../../Components/Footer/Footer";
+import ParentLayout from "../../../Components/ParentLayout/ParentLayout";
 import {
   UserPlus,
   CalendarCheck,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/ParentShared.css";
 import "./ManageChildren.css";
-import Footer from "../../../components/Footer/Footer";
+import Footer from "../../../Components/Footer/Footer";
 import ParentLayout from "../../../Components/ParentLayout/ParentLayout";
 import {
   User, Users, MapPin, Pencil, Trash2,
@@ -27,7 +27,7 @@ const ManageChildren = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("http://localhost:5000/api/parent/my-children", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/parent/my-children`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await response.json();
@@ -89,7 +89,7 @@ const ManageChildren = () => {
         data.append("birthCertificate", newCertificate);
       }
 
-      const response = await fetch(`http://localhost:5000/api/parent/children/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/parent/children/${id}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` }, // ✅ no Content-Type — browser sets multipart boundary
         body: data,
@@ -121,7 +121,7 @@ const ManageChildren = () => {
   // ✅ Real backend call — DELETE /api/parent/children/:childId
   const handleRemoveConfirmed = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/parent/children/${childToRemove.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/parent/children/${childToRemove.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
