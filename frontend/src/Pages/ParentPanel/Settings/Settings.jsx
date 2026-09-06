@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Settings.css";
 import "../../../styles/ParentShared.css";
-import Footer from "../../../Components/Footer/Footer";
-import ParentLayout from "../../../Components/ParentLayout/ParentLayout";
+import Footer from "../../../components/Footer/Footer";
+import ParentLayout from "../../../components/ParentLayout/ParentLayout";
 import {
   User,
   Lock,
@@ -73,7 +73,7 @@ const Settings = () => {
     if (deleteConfirmText.trim().toUpperCase() !== "DELETE") return;
     setDeleteError("");
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/parent/profile`, {
+      const response = await fetch("http://localhost:5000/api/parent/profile", {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

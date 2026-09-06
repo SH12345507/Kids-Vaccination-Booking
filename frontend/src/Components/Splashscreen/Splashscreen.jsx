@@ -1,5 +1,5 @@
 import React from "react";
-import "./Splashscreen.css";
+import "./SplashScreen.css";
 import logo from "../../assets/logo.png";
 
 const SplashScreen = () => {

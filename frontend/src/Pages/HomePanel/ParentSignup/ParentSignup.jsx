@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./ParentSignup.css";
 import signupImg from "../../../assets/mother.jpeg";
-import PageHero from "../../../Components/PageHero/PageHero";
-import Footer from "../../../Components/Footer/Footer";
+import PageHero from "../../../components/PageHero/PageHero";
+import Footer from "../../../components/Footer/Footer";
 import {
   User, AtSign, Mail, Phone, Lock, Eye, EyeOff,
 } from "lucide-react";
@@ -42,7 +42,7 @@ const ParentSignup = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/parent-signup`, {
+      const response = await fetch("http://localhost:5000/api/auth/parent-signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
