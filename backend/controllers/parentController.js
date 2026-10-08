@@ -1,5 +1,6 @@
 const Parent = require("../models/Parent");
 const Child = require("../models/Child");
+const Hospital = require("../models/Hospital");
 const bcrypt = require("bcryptjs");
 const generateSchedule = require("../utils/generateSchedule");
 const sendNotification = require("../utils/sendNotification");
@@ -69,17 +70,33 @@ const changePassword = async (req, res) => {
   }
 };
 
-// ===== DELETE ACCOUNT (also removes their children's records) =====
+// ===== DELETE ACCOUNT (also removes their children's records and frees their slots) =====
 const deleteAccount = async (req, res) => {
   try {
     const parent = await Parent.findByIdAndDelete(req.user.id);
     if (!parent) return res.status(404).json({ message: "Parent not found" });
 
-    await Child.deleteMany({ parent: req.user.id }); // ✅ clean up their children too
+    // ✅ give every booked slot back before deleting the children
+    const children = await Child.find({ parent: req.user.id });
+    for (const c of children) {
+      await releaseSlot(c.hospital, c.slot);
+    }
+    await Child.deleteMany({ parent: req.user.id });
 
     res.status(200).json({ message: "Account deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// ===== helper: give a booked slot back (bookedSlots - 1) =====
+const releaseSlot = async (hospitalId, slotId) => {
+  if (!hospitalId || !slotId) return;
+  const hosp = await Hospital.findById(hospitalId);
+  const slotDoc = hosp?.slots.id(slotId);
+  if (slotDoc && slotDoc.bookedSlots > 0) {
+    slotDoc.bookedSlots -= 1;
+    await hosp.save();
   }
 };
 
@@ -89,7 +106,7 @@ const registerChild = async (req, res) => {
     const {
       childName, guardianName, guardianCnic,
       dateOfBirth, address, serviceType,
-      requestType, hospital, autoSchedule, startVaccine,
+      requestType, hospital, slot, autoSchedule, startVaccine,
     } = req.body;
 
     const isAutoSchedule = autoSchedule === "true" || autoSchedule === true;
@@ -98,42 +115,76 @@ const registerChild = async (req, res) => {
     const childPicture = req.files?.childPicture?.[0]?.path || "";
     const birthCertificate = req.files?.birthCertificate?.[0]?.path || "";
 
-    // ✅ Build the vaccine schedule from the Vaccine collection.
-    // Passing `hospital` lets stockStatus reflect this hospital's real stock
-    // (previously this was missing, so stockStatus was never accurate).
-    // `startVaccine` lets the schedule begin partway through if the child has
-    // already received earlier doses elsewhere.
-    // - autoSchedule ON  → full schedule starting from startVaccine (or birth).
-    // - autoSchedule OFF but a vaccine was picked → schedule with just that one vaccine.
-    // - autoSchedule OFF and no vaccine picked → no schedule at all.
-    let schedule = [];
-    if (isAutoSchedule) {
-      schedule = await generateSchedule(dateOfBirth, hospital, startVaccine);
-    } else if (startVaccine) {
-      schedule = await generateSchedule(dateOfBirth, hospital, startVaccine, true);
+    // ✅ SLOT BOOKING — validate hospital + slot, then book it (bookedSlots + 1)
+    if (!hospital || !slot) {
+      return res.status(400).json({ message: "Please select a hospital and a slot." });
     }
 
-    const child = await Child.create({
-      childName, guardianName, guardianCnic,
-      dateOfBirth, address, serviceType,
-      requestType, hospital,
-      autoSchedule: isAutoSchedule,
-      childPicture,
-      birthCertificate,
-      schedule,
-      parent: req.user.id,
-    });
+    const hosp = await Hospital.findById(hospital);
+    if (!hosp) return res.status(404).json({ message: "Hospital not found" });
 
-    // ✅ notify the hospital the parent selected, so they see it in their
-    // pending requests (Manage Schedule / View Appointments)
-    if (hospital) {
-      await sendNotification({
-        recipientId: hospital,
-        role: "hospital",
-        title: "New Child Registration",
-        message: `${childName} has been registered by a parent and is awaiting your approval.`,
+    const slotDoc = hosp.slots.id(slot);
+    if (!slotDoc) return res.status(404).json({ message: "Slot not found" });
+
+    // slot type must match the request type (home -> "Home", hospital -> "Hospital")
+    const expectedType = requestType === "home" ? "Home" : "Hospital";
+    if (slotDoc.type !== expectedType) {
+      return res.status(400).json({
+        message: `This slot is not available for ${requestType === "home" ? "home" : "hospital"} visits.`,
       });
     }
+
+    if (slotDoc.bookedSlots >= slotDoc.totalSlots) {
+      return res.status(400).json({ message: "This slot is already full. Please choose another." });
+    }
+
+    slotDoc.bookedSlots += 1; // ✅ this is what updates Booked / Avail on the hospital's Manage Slots page
+    await hosp.save();
+
+    // ✅ Build the vaccine schedule (see earlier notes: autoSchedule / startVaccine)
+    let child;
+    try {
+      let schedule = [];
+      if (isAutoSchedule) {
+        schedule = await generateSchedule(dateOfBirth, hospital, startVaccine);
+      } else if (startVaccine) {
+        schedule = await generateSchedule(dateOfBirth, hospital, startVaccine, true);
+      }
+
+      child = await Child.create({
+        childName, guardianName, guardianCnic,
+        dateOfBirth, address, serviceType,
+        requestType, hospital, slot,
+        autoSchedule: isAutoSchedule,
+        childPicture,
+        birthCertificate,
+        schedule,
+        parent: req.user.id,
+      });
+    } catch (err) {
+      // ✅ child could not be saved -> give the slot back so it isn't "booked" for nothing
+      await releaseSlot(hospital, slot);
+      throw err;
+    }
+
+    // ✅ tell the hospital when this booking filled the slot
+    if (slotDoc.bookedSlots >= slotDoc.totalSlots) {
+      await sendNotification({
+        recipientId: hosp._id,
+        role: "hospital",
+        title: "Slot Fully Booked",
+        message: `Your ${slotDoc.day} ${slotDoc.timeFrom}-${slotDoc.timeTo} slot is now fully booked.`,
+        user: hosp,
+      });
+    }
+
+    // ✅ notify the hospital so they see the new request
+    await sendNotification({
+      recipientId: hospital,
+      role: "hospital",
+      title: "New Child Registration",
+      message: `${childName} has been registered by a parent and is awaiting your approval.`,
+    });
 
     res.status(201).json({ message: "Child registered successfully", child });
   } catch (error) {
@@ -166,14 +217,11 @@ const updateChild = async (req, res) => {
     if (dateOfBirth !== undefined) updateData.dateOfBirth = dateOfBirth;
     if (address !== undefined) updateData.address = address;
 
-    // ✅ Only overwrite birthCertificate if a new file was actually uploaded —
-    // otherwise leave the existing one untouched (edit form may be submitted
-    // with no new file selected).
+    // ✅ Only overwrite birthCertificate if a new file was actually uploaded
     const newCertificate = req.files?.birthCertificate?.[0]?.path;
     if (newCertificate) updateData.birthCertificate = newCertificate;
 
-    // ✅ Ownership check baked into the query itself — a parent can only
-    // ever match/update a child document that is their own.
+    // ✅ Ownership check baked into the query itself
     const child = await Child.findOneAndUpdate(
       { _id: req.params.childId, parent: req.user.id },
       updateData,
@@ -201,6 +249,9 @@ const deleteChild = async (req, res) => {
     if (!child) {
       return res.status(404).json({ message: "Child not found or not yours to delete" });
     }
+
+    // ✅ free the booked slot so it becomes available again
+    await releaseSlot(child.hospital, child.slot);
 
     res.status(200).json({ message: "Child removed" });
   } catch (error) {

@@ -39,6 +39,7 @@ const AddChild = () => {
     address: "",
     serviceType: "private",
     hospital: "",
+    slot: "", // ✅ the slot (inside the chosen hospital) the parent books
     requestType: "hospital",
     autoSchedule: false,
     startVaccine: "",
@@ -85,11 +86,7 @@ const AddChild = () => {
     return `${Math.floor(years)} years`;
   };
 
-  // ✅ While the user is still typing the year in the date input (e.g. "2" → "20"
-  // → "200" → "2002"), the field can briefly hold a technically-valid but
-  // nonsensical date (year 2, 20, 200...), which made the age calculation
-  // (and the "ineligible" warning) flash on too early. Only treat the DOB as
-  // "complete" once it has a full 4-digit year within a sane range.
+  // ✅ Only treat the DOB as "complete" once it has a full 4-digit year in a sane range
   const isCompleteDob = (dob) => {
     if (!dob) return false;
     const yearStr = dob.split("-")[0];
@@ -108,21 +105,15 @@ const AddChild = () => {
       ? vaccineList.find((v) => v.ageInDays >= currentAgeInDays)
       : null;
 
-  // ✅ child is only "ineligible" once we actually have enough info to judge —
-  // DOB fully entered, vaccine list loaded, and no vaccine left that fits their age
   const isIneligibleForSchedule =
     dobIsComplete && vaccineList.length > 0 && !suggestedVaccine;
 
-  // ✅ The vaccine actually in play right now — whatever the parent manually
-  // picked in the dropdown, falling back to the age-based suggestion. Used to
-  // ask the hospital-list endpoint which hospitals actually stock it.
   const effectiveVaccineId = formData.startVaccine || suggestedVaccine?._id || "";
   const effectiveVaccine =
     vaccineList.find((v) => v._id === effectiveVaccineId) || suggestedVaccine || null;
   const selectedVaccineName = !isIneligibleForSchedule ? effectiveVaccine?.name || "" : "";
 
-  // ✅ if the child becomes ineligible (e.g. DOB changed to an older date),
-  // force Auto Schedule off so an invalid schedule can't be submitted
+  // ✅ if the child becomes ineligible, force Auto Schedule off
   useEffect(() => {
     if (isIneligibleForSchedule && formData.autoSchedule) {
       setFormData((prev) => ({ ...prev, autoSchedule: false, startVaccine: "" }));
@@ -130,16 +121,17 @@ const AddChild = () => {
     // eslint-disable-next-line
   }, [isIneligibleForSchedule]);
 
-  // ✅ Fetch approved hospitals every time serviceType (private/government)
-  // changes, or the determined vaccine changes. Passing vaccineName lets the
-  // backend hide hospitals that don't stock this vaccine at all, and flag
-  // (without hiding) hospitals that stock it but are currently at 0 quantity.
+  // ✅ Fetch approved hospitals whenever serviceType, requestType (home/hospital)
+  // or the determined vaccine changes.
+  //   - requestType "home"     -> backend returns only hospitals with open HOME slots
+  //   - requestType "hospital" -> backend returns only hospitals with open HOSPITAL slots
+  // Each hospital comes back with its own `availableSlots` list.
   useEffect(() => {
     const fetchHospitals = async () => {
       setLoadingHospitals(true);
       try {
         const type = formData.serviceType === "government" ? "Government" : "Private";
-        const params = new URLSearchParams({ type });
+        const params = new URLSearchParams({ type, requestType: formData.requestType });
         if (selectedVaccineName) params.set("vaccineName", selectedVaccineName);
 
         const res = await fetch(`${API_BASE}/hospital/public?${params.toString()}`, {
@@ -156,11 +148,10 @@ const AddChild = () => {
     };
 
     fetchHospitals();
-    // reset previously selected hospital when switching private/government
-    // or when the vaccine changes — the previous list may no longer apply
-    setFormData((prev) => ({ ...prev, hospital: "" }));
+    // the previous hospital + slot may no longer apply, so reset both
+    setFormData((prev) => ({ ...prev, hospital: "", slot: "" }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.serviceType, selectedVaccineName]);
+  }, [formData.serviceType, formData.requestType, selectedVaccineName]);
 
   const handleChange = (e) => {
     const value =
@@ -168,11 +159,16 @@ const AddChild = () => {
     setFormData({ ...formData, [e.target.name]: value });
   };
 
-  // ✅ Select a hospital from the dropdown list, then close the list
+  // ✅ Select a hospital from the dropdown list, then close the list.
+  // The slot is cleared because slots belong to one specific hospital.
   const handleHospitalSelect = (hospitalId) => {
-    setFormData((prev) => ({ ...prev, hospital: hospitalId }));
+    setFormData((prev) => ({ ...prev, hospital: hospitalId, slot: "" }));
     setShowHospitalDropdown(false);
   };
+
+  // ✅ the hospital currently chosen, and the slots the parent can book there
+  const selectedHospital = hospitals.find((h) => h._id === formData.hospital) || null;
+  const availableSlots = selectedHospital?.availableSlots || [];
 
   // ✅ Submit/update a rating for a hospital, then refresh the list so averageRating updates
   const handleRateHospital = async (hospitalId, rating, comment) => {
@@ -205,14 +201,19 @@ const AddChild = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Ignore any extra submit events (double-click, double-tap, accidental
-    // Enter + click) that arrive while a request is already in flight.
+    // ✅ Ignore any extra submit events while a request is already in flight.
     if (isSubmitting) return;
 
     setSubmitError("");
 
-    if (formData.requestType === "hospital" && !formData.hospital) {
+    if (!formData.hospital) {
       setSubmitError("Please select a hospital before submitting.");
+      return;
+    }
+
+    // ✅ a slot is required for both home and hospital visits
+    if (!formData.slot) {
+      setSubmitError("Please select an appointment slot before submitting.");
       return;
     }
 
@@ -226,11 +227,9 @@ const AddChild = () => {
     setIsSubmitting(true);
     try {
       const data = new FormData();
+      // formData already contains `hospital` and `slot`, so both go to the backend
       Object.entries(formData).forEach(([key, value]) => data.append(key, value));
 
-      // ✅ Send the selected/suggested vaccine whenever one applies — used to
-      // build the full schedule (autoSchedule on) or a single entry (off).
-      // If the parent never touched the dropdown, fall back to the suggestion.
       if (!isIneligibleForSchedule) {
         data.set("startVaccine", formData.startVaccine || suggestedVaccine?._id || "");
       }
@@ -250,7 +249,7 @@ const AddChild = () => {
         setIsSubmitting(false);
         return;
       }
-      setSubmitted(true); // ✅ page switches to the success screen, so no need to reset isSubmitting here
+      setSubmitted(true);
     } catch (err) {
       console.error(err);
       setSubmitError("Server error. Please try again later.");
@@ -262,11 +261,11 @@ const AddChild = () => {
     return (
       <div className="page-bg add-child-page">
         <PageHero
-  image={motherImg}
-  title="Registration Successful"
-  description="Your child has been successfully registered."
-  showProfileIcon={false}
-/>
+          image={motherImg}
+          title="Registration Successful"
+          description="Your child has been successfully registered."
+          showProfileIcon={false}
+        />
 
         <div className="success-wrapper">
           <div className="success-card form-card">
@@ -325,16 +324,14 @@ const AddChild = () => {
 
   return (
     <div className="page-bg add-child-page">
-      {/* Navbar */}
       <PageHero
-  image={motherImg}
-  title="Register Your Child"
-  description="Fill in the details below to register your child for vaccination."
-  showProfileIcon={false}
-/>
+        image={motherImg}
+        title="Register Your Child"
+        description="Fill in the details below to register your child for vaccination."
+        showProfileIcon={false}
+      />
 
       <div className="add-child-wrapper">
-        
 
         <form onSubmit={handleSubmit} className="child-form-card form-card">
 
@@ -509,8 +506,6 @@ const AddChild = () => {
             </div>
           </div>
 
-          
-
           {/* ===== Section 3: Request Type ===== */}
           <h2 className="section-title">Request Type</h2>
 
@@ -548,7 +543,8 @@ const AddChild = () => {
               </label>
             </div>
           </div>
-          {/* Hospital List — fetched from backend based on serviceType */}
+
+          {/* Hospital List — only hospitals with open slots for the chosen request type */}
           <div className="form-group">
             <label className="field-label">Select Hospital</label>
 
@@ -563,10 +559,7 @@ const AddChild = () => {
                     <Building2 size={22} />
                   </div>
                   <span className="hospital-trigger-text">
-                    {formData.hospital
-                      ? hospitals.find((h) => h._id === formData.hospital)?.name ||
-                        "Select Hospital"
-                      : "Select Hospital"}
+                    {selectedHospital?.name || "Select Hospital"}
                   </span>
                 </div>
                 {showHospitalDropdown ? (
@@ -581,7 +574,9 @@ const AddChild = () => {
                   <p className="hint-text">Loading hospitals...</p>
                 ) : hospitals.length === 0 ? (
                   <p className="hint-text">
-                    No {formData.serviceType} hospitals available yet.
+                    No {formData.serviceType} hospitals with open{" "}
+                    {formData.requestType === "home" ? "home visit" : "hospital visit"} slots
+                    right now.
                   </p>
                 ) : (
                   <div className="hospital-dropdown-panel">
@@ -598,9 +593,6 @@ const AddChild = () => {
                             }`}
                           />
                           <span className="hospital-item-name">{h.name}</span>
-                          {/* ✅ shown only when a vaccine was determined (selectedVaccineName
-                              set) and this hospital tracks it but is at 0 quantity —
-                              hospital stays selectable, this is just a heads-up */}
                           {selectedVaccineName && h.vaccineInStock === false && (
                             <span className="badge-out-of-stock">Out of Stock</span>
                           )}
@@ -623,6 +615,25 @@ const AddChild = () => {
             </div>
           </div>
 
+          {/* ✅ Slot picker — appears once a hospital is chosen */}
+          {selectedHospital && (
+            <div className="form-group">
+              <label className="field-label">
+                Select {formData.requestType === "home" ? "Home Visit" : "Hospital Visit"} Slot
+              </label>
+              <div className="input-group">
+                <select name="slot" value={formData.slot} onChange={handleChange} required>
+                  <option value="">Choose a slot</option>
+                  {availableSlots.map((s) => (
+                    <option key={s._id} value={s._id}>
+                      {s.day} · {s.timeFrom} – {s.timeTo} ({s.remaining} left)
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )}
+
           {viewHospital && (
             <HospitalModal
               hospital={viewHospital}
@@ -632,36 +643,31 @@ const AddChild = () => {
           )}
 
           {/* ===== Payment Details ===== */}
-<div className={`payment-section ${formData.serviceType === "government" ? "payment-hidden" : ""}`}>
-  <h2 className="section-title">
-    <CreditCard size={20} />
-    Payment Details
-  </h2>
-  <div className="payment-card">
-    {(() => {
-      const selectedHospital = hospitals.find((h) => h._id === formData.hospital);
-      if (!selectedHospital) {
-        return (
-          <p className="hint-text" style={{ textAlign: "center", padding: "20px 0" }}>
-            Payment details will be available once you select a hospital.
-          </p>
-        );
-      }
-      const amount =
-        formData.requestType === "home"
-          ? selectedHospital.homeVisitCharges
-          : selectedHospital.hospitalVisitCharges;
-      return (
-        <div className="payment-row total">
-          <span className="payment-label">
-            {formData.requestType === "home" ? "Home Visit Fee" : "Hospital Visit Fee"}
-          </span>
-          <span className="payment-amount">Rs. {amount}</span>
-        </div>
-      );
-    })()}
-  </div>
-</div>
+          <div className={`payment-section ${formData.serviceType === "government" ? "payment-hidden" : ""}`}>
+            <h2 className="section-title">
+              <CreditCard size={20} />
+              Payment Details
+            </h2>
+            <div className="payment-card">
+              {!selectedHospital ? (
+                <p className="hint-text" style={{ textAlign: "center", padding: "20px 0" }}>
+                  Payment details will be available once you select a hospital.
+                </p>
+              ) : (
+                <div className="payment-row total">
+                  <span className="payment-label">
+                    {formData.requestType === "home" ? "Home Visit Fee" : "Hospital Visit Fee"}
+                  </span>
+                  <span className="payment-amount">
+                    Rs.{" "}
+                    {formData.requestType === "home"
+                      ? selectedHospital.homeVisitCharges
+                      : selectedHospital.hospitalVisitCharges}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
 
           {submitError && (
             <p className="hint-text" style={{ color: "#b91c1c", textAlign: "center" }}>
