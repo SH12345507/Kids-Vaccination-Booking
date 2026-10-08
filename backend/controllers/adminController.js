@@ -15,6 +15,31 @@ const getAllHospitals = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+// ===== GET DASHBOARD STATS =====
+const getDashboardStats = async (req, res) => {
+  try {
+    const totalHospitals = await Hospital.countDocuments();
+    const totalParents = await Parent.countDocuments();
+
+    const pendingRequests = await Child.countDocuments({
+      status: "Pending",
+    });
+
+    const systemAlerts = 0;
+
+    res.status(200).json({
+      totalHospitals,
+      totalParents,
+      pendingRequests,
+      systemAlerts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
 
 // ===== APPROVE HOSPITAL =====
 const approveHospital = async (req, res) => {
@@ -294,8 +319,10 @@ const deleteAccount = async (req, res) => {
 
 module.exports = {
   getAllHospitals,
+  getDashboardStats,
   approveHospital,
   rejectHospital,
+  
   getAllParents,
   getAllParentsWithChildren,
   deleteParent,

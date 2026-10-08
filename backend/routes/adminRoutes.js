@@ -3,6 +3,7 @@ const router = express.Router();
 const { protect, adminOnly } = require("../middleware/authMiddleware");
 const {
   getAllHospitals,
+  getDashboardStats,
   approveHospital,
   rejectHospital,
   getAllParents,
@@ -17,6 +18,7 @@ const {
 } = require("../controllers/adminController");
 
 router.get("/hospitals", protect, adminOnly, getAllHospitals);
+router.get("/dashboard-stats", protect, adminOnly, getDashboardStats);
 router.put("/approve-hospital/:hospitalId", protect, adminOnly, approveHospital);
 router.delete("/reject-hospital/:hospitalId", protect, adminOnly, rejectHospital);
 

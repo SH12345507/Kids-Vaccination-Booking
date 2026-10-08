@@ -312,18 +312,58 @@ const getPublicSlots = async (req, res) => {
   }
 };
 
-// ===== GET APPROVED HOSPITALS FOR PARENT DROPDOWN (filtered by type) =====
+// ===== GET APPROVED HOSPITALS FOR PARENT DROPDOWN (filtered by type + vaccine) =====
 // GET /api/hospital/public?type=Private  or  ?type=Government
+// GET /api/hospital/public?type=Private&vaccineName=BCG
+//
+// ✅ Slot rule (unchanged) — only hospitals with at least one non-full slot
+// are returned. A hospital whose every slot has bookedSlots >= totalSlots
+// (or that has no slots at all) is excluded — Government/Private alike.
+//
+// ✅ NEW — optional `vaccineName` filter, used by AddChild once a vaccine is
+// determined from the child's date of birth:
+//   - If the hospital's stock has NO entry matching this vaccine name at all,
+//     the hospital is left out of the list completely (it simply doesn't
+//     provide this vaccine).
+//   - If the hospital DOES track this vaccine but is currently at 0
+//     quantity, the hospital STAYS in the list — a `vaccineInStock: false`
+//     flag is attached instead, so the frontend can show an "Out of Stock"
+//     label while still letting the parent pick this hospital (they may
+//     restock later).
 const getPublicHospitals = async (req, res) => {
   try {
-    const { type } = req.query;
+    const { type, vaccineName } = req.query;
     const filter = { isApproved: true };
     if (type) filter.type = type;
 
     const hospitals = await Hospital.find(filter).select(
-      "name type address phone visitType hospitalVisitCharges homeVisitCharges ratings"
+      "name type address phone visitType hospitalVisitCharges homeVisitCharges ratings slots stock"
     );
-    res.status(200).json(hospitals);
+
+    // ✅ keep only hospitals that have at least one slot with room left
+    let availableHospitals = hospitals.filter((h) =>
+      h.slots.some((slot) => slot.bookedSlots < slot.totalSlots)
+    );
+
+    if (vaccineName) {
+      const target = vaccineName.toLowerCase();
+
+      availableHospitals = availableHospitals
+        // ✅ only hospitals that actually track this vaccine in their stock
+        .filter((h) => h.stock.some((s) => s.name.toLowerCase() === target))
+        .map((h) => {
+          const stockItem = h.stock.find((s) => s.name.toLowerCase() === target);
+          const { slots, stock, ...rest } = h.toObject();
+          return { ...rest, vaccineInStock: stockItem.quantity > 0 };
+        });
+    } else {
+      availableHospitals = availableHospitals.map((h) => {
+        const { slots, stock, ...rest } = h.toObject();
+        return rest; // ✅ don't leak the full slots/stock arrays to the dropdown response
+      });
+    }
+
+    res.status(200).json(availableHospitals);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

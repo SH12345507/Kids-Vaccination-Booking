@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Splashscreen from "./Components/Splashscreen/Splashscreen";
+import Splashscreen from "./Components/SplashScreen/SplashScreen";
 import Home from "./Pages/HomePanel/Home/Home";
 import HospitalSignup from "./Pages/HomePanel/HospitalSignup/HospitalSignup";
-import Login from "./Pages/HomePanel/login/login";
+import Login from "./pages/HomePanel/Login/Login";
 import ParentSignup from "./Pages/HomePanel/ParentSignup/ParentSignup";
 import VaccineInfo from "./Pages/HomePanel/VaccineInfo/VaccineInfo";
 import VaccineGuidance from "./Pages/HomePanel/VaccineGuidance/VaccineGuidance";
@@ -11,7 +11,7 @@ import ForgotPassword from "./Pages/HomePanel/ForgotPassword/ForgotPassword";
 import ParentDashboard from "./Pages/ParentPanel/ParentDashboard/ParentDashboard";
 import AddChild from "./Pages/ParentPanel/AddChild/AddChild";
 import VaccineSchedule from "./Pages/ParentPanel/VaccineSchedule/VaccineSchedule";
-import About from "./Pages/About/About";
+import About from "./pages/About/About";
 import Settings from "./Pages/ParentPanel/Settings/Settings";
 import ChangePassword from "./Pages/ParentPanel/ChangePassword/ChangePassword";
 import ManageChildren from "./Pages/ParentPanel/ManageChildren/ManageChildren";
@@ -37,7 +37,7 @@ import AProfile from "./Pages/AdminPanel/AProfile/AProfile";
 import ANotifications from "./Pages/AdminPanel/ANotifications/ANotifications";
 import AChangePassword from "./Pages/AdminPanel/AChangePassword/AChangePassword";
 import FloatingMenu from "./Components/FloatingMenu/FloatingMenu";
-import HospitalModal from "./Pages/ParentPanel/HospitalModal/HospitalModal";
+import HospitalModal from "./Pages/ParentPanel/Hospitalmodal/HospitalModal";
 
 
 
