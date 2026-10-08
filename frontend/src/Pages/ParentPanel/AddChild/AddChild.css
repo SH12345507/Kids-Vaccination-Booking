@@ -505,6 +505,19 @@
   color: var(--color-text-dark);
 }
 
+/* ===== NEW — "Out of Stock" badge next to a hospital name in the dropdown ===== */
+/* Shown when the hospital tracks the determined vaccine but currently has
+   0 quantity. The hospital stays selectable — this is just a heads-up. */
+.badge-out-of-stock {
+  font-size: 11px;
+  font-weight: 600;
+  background-color: #fdecea;
+  color: #b91c1c;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
 .hospital-view-link {
   display: flex;
   align-items: center;

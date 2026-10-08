@@ -113,6 +113,14 @@ const AddChild = () => {
   const isIneligibleForSchedule =
     dobIsComplete && vaccineList.length > 0 && !suggestedVaccine;
 
+  // ✅ The vaccine actually in play right now — whatever the parent manually
+  // picked in the dropdown, falling back to the age-based suggestion. Used to
+  // ask the hospital-list endpoint which hospitals actually stock it.
+  const effectiveVaccineId = formData.startVaccine || suggestedVaccine?._id || "";
+  const effectiveVaccine =
+    vaccineList.find((v) => v._id === effectiveVaccineId) || suggestedVaccine || null;
+  const selectedVaccineName = !isIneligibleForSchedule ? effectiveVaccine?.name || "" : "";
+
   // ✅ if the child becomes ineligible (e.g. DOB changed to an older date),
   // force Auto Schedule off so an invalid schedule can't be submitted
   useEffect(() => {
@@ -122,13 +130,19 @@ const AddChild = () => {
     // eslint-disable-next-line
   }, [isIneligibleForSchedule]);
 
-  // ✅ Fetch approved hospitals every time serviceType (private/government) changes
+  // ✅ Fetch approved hospitals every time serviceType (private/government)
+  // changes, or the determined vaccine changes. Passing vaccineName lets the
+  // backend hide hospitals that don't stock this vaccine at all, and flag
+  // (without hiding) hospitals that stock it but are currently at 0 quantity.
   useEffect(() => {
     const fetchHospitals = async () => {
       setLoadingHospitals(true);
       try {
         const type = formData.serviceType === "government" ? "Government" : "Private";
-        const res = await fetch(`${API_BASE}/hospital/public?type=${type}`, {
+        const params = new URLSearchParams({ type });
+        if (selectedVaccineName) params.set("vaccineName", selectedVaccineName);
+
+        const res = await fetch(`${API_BASE}/hospital/public?${params.toString()}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -143,9 +157,10 @@ const AddChild = () => {
 
     fetchHospitals();
     // reset previously selected hospital when switching private/government
+    // or when the vaccine changes — the previous list may no longer apply
     setFormData((prev) => ({ ...prev, hospital: "" }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.serviceType]);
+  }, [formData.serviceType, selectedVaccineName]);
 
   const handleChange = (e) => {
     const value =
@@ -583,6 +598,12 @@ const AddChild = () => {
                             }`}
                           />
                           <span className="hospital-item-name">{h.name}</span>
+                          {/* ✅ shown only when a vaccine was determined (selectedVaccineName
+                              set) and this hospital tracks it but is at 0 quantity —
+                              hospital stays selectable, this is just a heads-up */}
+                          {selectedVaccineName && h.vaccineInStock === false && (
+                            <span className="badge-out-of-stock">Out of Stock</span>
+                          )}
                         </div>
                         <button
                           type="button"

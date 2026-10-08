@@ -20,23 +20,26 @@ async function generateSchedule(dateOfBirth, hospitalId, startVaccineId, singleO
         : vaccines.filter((v) => v.ageInDays >= startVaccine.ageInDays);
     }
   } else if (singleOnly) {
-    // no vaccine selected and only-one-was-requested — nothing to schedule
     vaccines = [];
   }
 
-  // ✅ fetch the selected hospital's stock once (empty array if hospital not found/not given)
+  // ✅ fetch the selected hospital's stock once
   let hospitalStock = [];
   if (hospitalId) {
     const hospital = await Hospital.findById(hospitalId).select("stock");
     hospitalStock = hospital?.stock || [];
   }
 
+  // ✅ NEW: only keep vaccines that the hospital has actually added to their stock
+  vaccines = vaccines.filter((v) =>
+    hospitalStock.some((s) => s.name.toLowerCase() === v.name.toLowerCase())
+  );
+
   return vaccines.map((v) => {
-    // ✅ match vaccine name against hospital stock (case-insensitive), quantity must be > 0
     const stockItem = hospitalStock.find(
       (s) => s.name.toLowerCase() === v.name.toLowerCase()
     );
-    const stockStatus = stockItem && stockItem.quantity > 0 ? "Available" : "Out of Stock";
+    const stockStatus = stockItem.quantity > 0 ? "Available" : "Out of Stock";
 
     return {
       vaccine: v._id,

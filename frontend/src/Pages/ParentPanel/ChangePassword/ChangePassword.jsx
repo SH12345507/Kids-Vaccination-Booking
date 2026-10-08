@@ -23,17 +23,44 @@ const ChangePassword = () => {
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
+
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       setPasswordError("New passwords do not match.");
       return;
     }
     setPasswordError("");
-    console.log("Password change requested:", passwordData);
-    setSavedMsg("Password changed successfully.");
-    setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
-    setTimeout(() => setSavedMsg(""), 3000);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("http://localhost:5000/api/parent/change-password", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setPasswordError(result.message || "Something went wrong.");
+        return;
+      }
+
+      setSavedMsg("Password changed successfully.");
+      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setTimeout(() => setSavedMsg(""), 3000);
+
+    } catch (error) {
+      setPasswordError("Server error. Please try again.");
+    }
   };
 
   return (
