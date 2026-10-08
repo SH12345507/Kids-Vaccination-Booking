@@ -97,6 +97,47 @@ const deleteAccount = async (req, res) => {
   }
 };
 
+// ===== DASHBOARD STATS (Hospital's own — for Dashboard stat cards) =====
+// GET /api/hospital/dashboard-stats
+const getDashboardStats = async (req, res) => {
+  try {
+    const hospital = await Hospital.findById(req.user.id).select("slots stock");
+    if (!hospital) return res.status(404).json({ message: "Hospital not found" });
+
+    // ✅ Total Appointments = sum of bookedSlots across all slots
+    const totalAppointments = hospital.slots.reduce(
+      (sum, s) => sum + (s.bookedSlots || 0), 0
+    );
+
+    // ✅ Vaccines in Stock = sum of quantity across all stock items
+    const vaccinesInStock = hospital.stock.reduce(
+      (sum, s) => sum + (s.quantity || 0), 0
+    );
+
+    // ✅ Patients Today = approved children with a not-yet-completed vaccine due today
+    const start = new Date(); start.setHours(0, 0, 0, 0);
+    const end = new Date();   end.setHours(23, 59, 59, 999);
+
+    const patientsToday = await Child.countDocuments({
+      hospital: req.user.id,
+      status: "Approved",
+      schedule: {
+        $elemMatch: { dueDate: { $gte: start, $lte: end }, status: { $ne: "Completed" } },
+      },
+    });
+
+    // ✅ Pending Reviews = child registration requests still waiting for approval
+    const pendingReviews = await Child.countDocuments({
+      hospital: req.user.id,
+      status: "Pending",
+    });
+
+    res.status(200).json({ totalAppointments, vaccinesInStock, patientsToday, pendingReviews });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 // ===== GET MY STOCK (Hospital's own — for Manage Stock page) =====
 const getMyStock = async (req, res) => {
   try {
@@ -312,58 +353,68 @@ const getPublicSlots = async (req, res) => {
   }
 };
 
-// ===== GET APPROVED HOSPITALS FOR PARENT DROPDOWN (filtered by type + vaccine) =====
-// GET /api/hospital/public?type=Private  or  ?type=Government
-// GET /api/hospital/public?type=Private&vaccineName=BCG
+// ===== GET APPROVED HOSPITALS FOR PARENT DROPDOWN (filtered by type + request type + vaccine) =====
+// GET /api/hospital/public?type=Private&requestType=home
+// GET /api/hospital/public?type=Government&requestType=hospital&vaccineName=BCG
 //
-// ✅ Slot rule (unchanged) — only hospitals with at least one non-full slot
-// are returned. A hospital whose every slot has bookedSlots >= totalSlots
-// (or that has no slots at all) is excluded — Government/Private alike.
+// ✅ requestType = "home"     -> only hospitals that have an open "Home" slot
+// ✅ requestType = "hospital" -> only hospitals that have an open "Hospital" slot
+// "Open" means bookedSlots < totalSlots. Each hospital is returned with its
+// `availableSlots` (only open slots of the matching type) so the parent can pick one.
 //
-// ✅ NEW — optional `vaccineName` filter, used by AddChild once a vaccine is
-// determined from the child's date of birth:
-//   - If the hospital's stock has NO entry matching this vaccine name at all,
-//     the hospital is left out of the list completely (it simply doesn't
-//     provide this vaccine).
-//   - If the hospital DOES track this vaccine but is currently at 0
-//     quantity, the hospital STAYS in the list — a `vaccineInStock: false`
-//     flag is attached instead, so the frontend can show an "Out of Stock"
-//     label while still letting the parent pick this hospital (they may
-//     restock later).
+// ✅ Optional `vaccineName` filter (unchanged behaviour):
+//   - no matching stock entry  -> hospital left out
+//   - matching entry at 0 qty  -> hospital stays, `vaccineInStock: false`
+//   - name matching ignores extra spaces and capital/small letters
 const getPublicHospitals = async (req, res) => {
   try {
-    const { type, vaccineName } = req.query;
+    const { type, vaccineName, requestType } = req.query;
     const filter = { isApproved: true };
     if (type) filter.type = type;
 
+    const slotType =
+      requestType === "home" ? "Home" : requestType === "hospital" ? "Hospital" : null;
+
     const hospitals = await Hospital.find(filter).select(
-      "name type address phone visitType hospitalVisitCharges homeVisitCharges ratings slots stock"
+      "name type address phone visitType hospitalVisitCharges homeVisitCharges ratings averageRating slots stock"
     );
 
-    // ✅ keep only hospitals that have at least one slot with room left
-    let availableHospitals = hospitals.filter((h) =>
-      h.slots.some((slot) => slot.bookedSlots < slot.totalSlots)
-    );
+    // ✅ keep only hospitals with at least one open slot of the requested type
+    let list = hospitals
+      .map((h) => ({
+        h,
+        openSlots: h.slots.filter(
+          (s) => s.bookedSlots < s.totalSlots && (!slotType || s.type === slotType)
+        ),
+      }))
+      .filter((x) => x.openSlots.length > 0);
 
-    if (vaccineName) {
-      const target = vaccineName.toLowerCase();
-
-      availableHospitals = availableHospitals
-        // ✅ only hospitals that actually track this vaccine in their stock
-        .filter((h) => h.stock.some((s) => s.name.toLowerCase() === target))
-        .map((h) => {
-          const stockItem = h.stock.find((s) => s.name.toLowerCase() === target);
-          const { slots, stock, ...rest } = h.toObject();
-          return { ...rest, vaccineInStock: stockItem.quantity > 0 };
-        });
-    } else {
-      availableHospitals = availableHospitals.map((h) => {
-        const { slots, stock, ...rest } = h.toObject();
-        return rest; // ✅ don't leak the full slots/stock arrays to the dropdown response
-      });
+    const target = vaccineName ? vaccineName.trim().toLowerCase() : null;
+    if (target) {
+      list = list.filter(({ h }) => h.stock.some((s) => s.name.trim().toLowerCase() === target));
     }
 
-    res.status(200).json(availableHospitals);
+    const result = list.map(({ h, openSlots }) => {
+      const { slots, stock, ...rest } = h.toObject(); // ✅ don't leak full slots/stock arrays
+      const out = {
+        ...rest,
+        availableSlots: openSlots.map((s) => ({
+          _id: s._id,
+          day: s.day,
+          timeFrom: s.timeFrom,
+          timeTo: s.timeTo,
+          type: s.type,
+          remaining: s.totalSlots - s.bookedSlots,
+        })),
+      };
+      if (target) {
+        const stockItem = h.stock.find((s) => s.name.trim().toLowerCase() === target);
+        out.vaccineInStock = stockItem.quantity > 0;
+      }
+      return out;
+    });
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -429,7 +480,7 @@ const rateHospital = async (req, res) => {
 };
 
 // ===== BOOK A SLOT (increases bookedSlots by 1 — used when a parent books an appointment) =====
-// Any logged-in user can call this (parent booking flow will use it once that page is built).
+// Any logged-in user can call this.
 const bookSlot = async (req, res) => {
   try {
     const hospital = await Hospital.findById(req.params.hospitalId);
@@ -636,8 +687,7 @@ const markVaccineGiven = async (req, res) => {
     child.scheduleCompleted = child.schedule.every((s) => s.status === "Completed");
 
     await child.save();
-    // ✅ re-populate — a plain .save() does NOT keep populated fields, so without
-    // this the vaccine names and parent phone would come back empty on the frontend
+    // ✅ re-populate — a plain .save() does NOT keep populated fields
     await child.populate([
       { path: "parent", select: "name email phone" },
       { path: "schedule.vaccine", select: "name ageLabel" },
@@ -738,6 +788,7 @@ module.exports = {
   updateProfile,
   changePassword,
   deleteAccount,
+  getDashboardStats,
   getMyStock,
   addStockItem,
   updateStockItem,

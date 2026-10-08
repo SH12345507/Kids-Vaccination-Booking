@@ -1,20 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HospitalDashboard.css";
 import hospitalImg from "../../../assets/HDashboard.jpeg";
 import "../../../styles/Hospitalshared.css";
 import Footer from "../../../Components/Footer/Footer";
 import HospitalLayout from "../../../Components/HospitalLayout/HospitalLayout";
-import { CalendarDays, PackageOpen, ClipboardList, Settings, Bell, Users, AlertCircle, Clock, Star } from "lucide-react";
+import { CalendarDays, PackageOpen, ClipboardList, Settings, Users, AlertCircle, Clock, Star } from "lucide-react";
 
 const HospitalDashboard = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  const [counts, setCounts] = useState({
+    totalAppointments: 0,
+    vaccinesInStock: 0,
+    patientsToday: 0,
+    pendingReviews: 0,
+  });
+
+  // ✅ Fetch real counts from backend
+  const fetchStats = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/hospital/dashboard-stats", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (res.ok) setCounts(data);
+    } catch (err) {
+      console.error("Stats load failed", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+    const timer = setInterval(fetchStats, 15000); // refresh every 15 sec
+    const onFocus = () => fetchStats();           // refresh when tab is focused again
+    window.addEventListener("focus", onFocus);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("focus", onFocus);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   const stats = [
-    { label: "Total Appointments", value: "0", icon: <CalendarDays size={22} color="#2563eb" />, bg: "#e8f1fc" },
-    { label: "Vaccines in Stock",  value: "0", icon: <PackageOpen size={22} color="#0d9488" />,  bg: "#e0f5f3" },
-    { label: "Patients Today",     value: "0", icon: <Users size={22} color="#b45309" />,        bg: "#fdf0d5" },
-    { label: "Pending Reviews",    value: "0", icon: <AlertCircle size={22} color="#ef4444" />,  bg: "#fde8e8" },
+    { label: "Total Appointments", value: counts.totalAppointments, icon: <CalendarDays size={22} color="#2563eb" />, bg: "#e8f1fc" },
+    { label: "Vaccines in Stock",  value: counts.vaccinesInStock,   icon: <PackageOpen size={22} color="#0d9488" />,  bg: "#e0f5f3" },
+    { label: "Patients Today",     value: counts.patientsToday,     icon: <Users size={22} color="#b45309" />,        bg: "#fdf0d5" },
+    { label: "Pending Reviews",    value: counts.pendingReviews,    icon: <AlertCircle size={22} color="#ef4444" />,  bg: "#fde8e8" },
   ];
 
   const modules = [

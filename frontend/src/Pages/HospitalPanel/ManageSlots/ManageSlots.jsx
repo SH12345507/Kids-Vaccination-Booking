@@ -21,9 +21,12 @@ const ManageSlots = () => {
   const [filterType, setFilterType] = useState("All");
 
   // ✅ Fetch real slots from backend
-  const fetchSlots = async () => {
-    setLoading(true);
-    setError("");
+  // silent = true → no loading spinner / no error flash (used for auto-refresh)
+  const fetchSlots = async (silent = false) => {
+    if (!silent) {
+      setLoading(true);
+      setError("");
+    }
     try {
       const response = await fetch("http://localhost:5000/api/hospital/slots", {
         headers: { Authorization: `Bearer ${token}` },
@@ -31,19 +34,29 @@ const ManageSlots = () => {
       const result = await response.json();
 
       if (!response.ok) {
-        setError(result.message || "Failed to load slots.");
+        if (!silent) setError(result.message || "Failed to load slots.");
         return;
       }
       setSlots(result.map((s) => ({ ...s, id: s._id })));
     } catch (err) {
-      setError("Server error. Please try again later.");
+      if (!silent) setError("Server error. Please try again later.");
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
+  // ✅ Load once, then auto-refresh so new parent bookings show up (Booked / Avail / Status)
   useEffect(() => {
     fetchSlots();
+
+    const timer = setInterval(() => fetchSlots(true), 15000); // every 15 sec
+    const onFocus = () => fetchSlots(true);                   // when tab is focused again
+    window.addEventListener("focus", onFocus);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("focus", onFocus);
+    };
     // eslint-disable-next-line
   }, []);
 

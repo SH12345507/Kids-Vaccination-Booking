@@ -30,6 +30,7 @@ const {
   markVaccineGiven,
   undoVaccineGiven,
   setVaccineDueDate,
+   getDashboardStats,
 } = require("../controllers/hospitalController");
 
 router.get("/profile", protect, getProfile);
@@ -92,5 +93,5 @@ router.put(
   hospitalOnly,
   setVaccineDueDate
 );
-
+router.get("/dashboard-stats", protect, getDashboardStats);
 module.exports = router;

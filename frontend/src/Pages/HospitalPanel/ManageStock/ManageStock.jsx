@@ -17,6 +17,22 @@ const ManageStock = () => {
   const [editItem, setEditItem]     = useState(null);
   const [editValues, setEditValues] = useState({ name: "", quantity: "" });
 
+  // ✅ Master vaccine list (same list parents see) — used for the dropdowns
+  const [vaccineList, setVaccineList] = useState([]);
+
+  const fetchVaccineList = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/vaccines", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const result = await response.json();
+      setVaccineList(response.ok && Array.isArray(result) ? result : []);
+    } catch (err) {
+      console.error("Failed to fetch vaccine list:", err);
+      setVaccineList([]);
+    }
+  };
+
   // ✅ Fetch real stock from backend on load
   const fetchStock = async () => {
     setLoading(true);
@@ -41,9 +57,34 @@ const ManageStock = () => {
   };
 
   useEffect(() => {
+    fetchVaccineList();
     fetchStock();
     // eslint-disable-next-line
   }, []);
+
+  // ✅ Unique vaccine names from the master list (a name could repeat)
+  const allVaccineOptions = vaccineList.filter(
+    (v, i, arr) => arr.findIndex((x) => x.name === v.name) === i
+  );
+
+  // ✅ For "Add": hide vaccines this hospital already has in stock
+  const addedNames = stocks.map((s) => s.name.trim().toLowerCase());
+  const addVaccineOptions = allVaccineOptions.filter(
+    (v) => !addedNames.includes(v.name.trim().toLowerCase())
+  );
+
+  // ✅ For "Edit": every vaccine except those already in stock — but keep the
+  // one currently being edited so it stays selectable
+  const editingName = editValues.name.trim().toLowerCase();
+  const editVaccineOptions = allVaccineOptions.filter(
+    (v) =>
+      v.name.trim().toLowerCase() === editingName ||
+      !addedNames.includes(v.name.trim().toLowerCase())
+  );
+  // if the current name isn't in the master list (custom/old entry), still show it
+  const editHasCurrent = editVaccineOptions.some(
+    (v) => v.name.trim().toLowerCase() === editingName
+  );
 
   // ✅ Add — real backend call
   const handleAdd = async () => {
@@ -146,8 +187,24 @@ const ManageStock = () => {
           <div className="stock-form-row">
             <div className="form-group">
               <label className="stock-label">Vaccine Name</label>
-              <input className="stock-input" type="text" placeholder="e.g. BCG, Hepatitis B"
-                value={newVaccine.name} onChange={(e) => setNewVaccine({ ...newVaccine, name: e.target.value })} />
+              {/* ✅ Dropdown of all vaccines from the master list */}
+              <select
+                className="stock-input"
+                value={newVaccine.name}
+                onChange={(e) => setNewVaccine({ ...newVaccine, name: e.target.value })}
+              >
+                <option value="">Select a vaccine</option>
+                {addVaccineOptions.map((v) => (
+                  <option key={v._id} value={v.name}>
+                    {v.name}{v.ageLabel ? ` (${v.ageLabel})` : ""}
+                  </option>
+                ))}
+              </select>
+              {vaccineList.length > 0 && addVaccineOptions.length === 0 && (
+                <p className="cp-error" style={{ marginTop: 6 }}>
+                  You have already added every available vaccine.
+                </p>
+              )}
             </div>
             <div className="form-group">
               <label className="stock-label">Quantity</label>
@@ -199,7 +256,21 @@ const ManageStock = () => {
             <h2>Edit Vaccine</h2>
             <div className="form-group">
               <label className="stock-label">Vaccine Name</label>
-              <input className="stock-input" type="text" value={editValues.name} onChange={(e) => setEditValues({ ...editValues, name: e.target.value })} />
+              {/* ✅ Dropdown here too, so the name always matches the master list */}
+              <select
+                className="stock-input"
+                value={editValues.name}
+                onChange={(e) => setEditValues({ ...editValues, name: e.target.value })}
+              >
+                {!editHasCurrent && editValues.name && (
+                  <option value={editValues.name}>{editValues.name}</option>
+                )}
+                {editVaccineOptions.map((v) => (
+                  <option key={v._id} value={v.name}>
+                    {v.name}{v.ageLabel ? ` (${v.ageLabel})` : ""}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="form-group">
               <label className="stock-label">Quantity</label>
